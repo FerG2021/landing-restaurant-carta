@@ -89,7 +89,6 @@
           <div class="field">
             <div class="p-float-label">
               <Rating id="rating" v-model="rating" :cancel="false" style="width: 100%" />
-               
             </div>
           </div>
 
@@ -151,15 +150,6 @@ export default {
       email: "",
       rating: null,
       descripcion: null,
-
-      form: {
-        idCategoria: null,
-        nombre: "",
-        email: "",
-        precio: null,
-        stock: null,
-        imagen: null,
-      },
     };
   },
 
@@ -193,7 +183,6 @@ export default {
       this.display = true;
       // this.isFormValid = false;
       this.resetForm();
-      this.getCategorias();
     },
 
     cerrar() {
@@ -204,43 +193,6 @@ export default {
         life: 3000,
       });
       this.display = false;
-    },
-
-    async getCategorias() {
-      await this.axios.get("/api/categoria-listar-todas").then((response) => {
-        if (response.data.code == 200) {
-          console.log("response.data.data");
-          console.log(response.data.data);
-
-          response.data.data.forEach((elemento) => {
-            let fila = {
-              name: elemento.categoria.name,
-              code: elemento.categoria.id,
-              subcategorias: elemento.subcategorias,
-            };
-
-            this.categoriasAPI.push(fila);
-          });
-
-          console.log("this.categoriasAPI");
-          console.log(this.categoriasAPI);
-        }
-      });
-    },
-
-    onUpload() {
-      this.$toast.add({
-        severity: "info",
-        summary: "Success",
-        detail: "File Uploaded",
-        life: 3000,
-      });
-    },
-
-    imagenSeleccionada(event) {
-      console.log("imagen");
-      console.log(event.files[0]);
-      this.imagen = event.files[0];
     },
 
     handleSubmit(isFormValid) {
@@ -273,47 +225,30 @@ export default {
     },
 
     resetForm() {
-      this.nombre = null;
-      this.email = null;
+      this.nombre = "";
+      this.email = "";
+      this.rating = null;
       this.descripcion = null;
-      this.stock = null;
-      this.categoria = null;
-      this.imagen = null;
-      this.categoriasAPI = [];
       this.loadingBtnGuardar = false;
       this.submitted = false;
     },
 
     async guardar() {
-      console.log("this.precio");
-      console.log(this.precio);
 
-      this.loadingBtnGuardar = true;
-
-      // genero el formulario
-      this.form.idCategoria = this.categoria.id;
-      this.form.nombre = this.nombre;
-      this.form.descripcion = this.descripcion;
-      this.form.precio = this.precio;
-      this.form.stock = 0;
-      this.form.imagen = this.imagen;
-
-      let formData = new FormData();
-
-      for (let key in this.form) {
-        formData.append(key, this.form[key]);
+      let params = {
+        nombre: this.nombre,
+        email: this.email,
+        valoracion: this.rating,
+        descripcion: this.descripcion,
       }
 
-      console.log("formData");
-      console.log(formData);
-
-      await this.axios.post("/api/producto", formData).then((response) => {
+      await this.axios.post("/api/resenia", params).then((response) => {
         console.log(response.data);
         if (response.data.code == 200) {
           this.$toast.add({
             severity: "success",
             summary: "Mensaje de confirmación",
-            detail: "Producto creado con éxito",
+            detail: "Reseña generada con éxito",
             life: 3000,
           });
 

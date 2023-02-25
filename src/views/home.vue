@@ -10,129 +10,118 @@
 
     <div class="contenedor-bienvenida">
       <div class="card-foto-local">
-        <img src="../assets/almamula.png" alt="MDN" class="foto-local">
+        <img src="../assets/restaurante.jpg" alt="MDN" class="foto-local">
       </div>
       <div class="card-bienvenida"> 
         <span class="nombre-local"> ALMA MULA </span> <br>
         Te damos a la bienvenida a nuestro menú digital <br>
-        Aquí vas a poder ver todo lo que tenemos disponible para ofrecerte
+        Aquí vas a poder ver todo lo que tenemos disponible para ofrecerte <br>
+
+        <a href="#footer">Contactanos</a>
+      </div>
+    </div>
+
+    <div class="scroll-container" id="scroll-container">
+      <div
+        v-for="(categoria, index) in arrayCategorias"
+        :key="index"
+        class="home"
+        v-loading="loading"
+      >
+        <h1 class="titulo-categoria">
+          {{ categoria.name }}
+        </h1>
+
+        <div
+          v-for="(subcategoria, index) in categoria.subcategorias"
+          :key="index"
+          style="z-index: 1"
+        >
+          <Accordion>
+            <AccordionTab
+              :header="subcategoria.name"
+              style="width: 100%; margin: 0px; height: auto"
+            >
+              <div
+                v-for="(producto, index) in subcategoria.productos"
+                :key="index"
+                style="padding: 7px;"
+              >
+                <div style="display: flex;" class="nombre-precio">
+                  <div style="margin: auto; width: 100%; margin: 0px">
+                    <p>{{ producto.name }}</p>
+                  </div>
+
+                  <div style="margin-right: 0px; width: 100%">
+                    <p style="text-align: right; "> $ {{ producto.price }} </p>
+                  </div>
+                </div>
+
+                <div v-if="producto.description" class="descripcion" >
+                  {{ producto.description }}
+                </div>
+              </div> 
+            </AccordionTab>
+          </Accordion>
+        </div>
+      </div>
+
+      <div class="footer" id="footer">
+        <div class="footer-section">
+          <p style="text-align: center; font-size: 20px">
+            CQC RESTAURANTE <br> 
+            <Button 
+              label="Escribir reseña" 
+              class="p-button-link" 
+              style="border: 1px solid #000; padding: 0px; color: #fff; text-decoration: none; "
+              @click="$refs.modalResenia.abrir()"
+            />
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <p style="text-align: center; font-size: 20px">
+            CONTACTO
+          </p>
+
+          <div style="display: flex; justify-content: center;">
+            <span class="material-icons" style="margin-right: 5px">mail</span>
+            <a href="mailto:fernandojaviergonzalez2018@gmail.com" style="text-decoration: none; color: #fff">fernandojaviergonzalez2018@gmail.com</a>
+          </div>
+
+          <div style="display: flex; justify-content: center; margin-top: 20px">
+            <i class="pi pi-whatsapp material-icons" style="margin-right: 5px"></i>
+            <Button 
+              label="3843-407142" 
+              class="p-button-link" 
+              style="border: 1px solid #000; padding: 0px; color: #fff; text-decoration: none; "
+              @click="contactarWhatsApp()"
+            />
+            <!-- <span style="">3843-407142</span> -->
+          </div>
+
+          <div style="display: flex; justify-content: center; margin-top: 20px">
+            <i class="pi pi-map-marker material-icons" style="margin-right: 5px"></i>
+            <span style="">Av. Saavedra S/N</span>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <p style="text-align: center">
+            <a href="https://instagram.com" style="text-decoration: none; color: #fff" target="_blank">
+              <i class="pi pi-instagram material-icons" style="margin-right: 20px; font-size: 30px"></i>
+            </a>
+            
+            <a href="https://facebook.com" style="text-decoration: none; color: #fff" target="_blank">
+              <i class="pi pi-facebook material-icons" style="margin-right: 20px; font-size: 30px"></i>
+            </a>
+          </p>
+            
+        </div>
       </div>
     </div>
   
-    <div
-      v-for="(categoria, index) in arrayCategorias"
-      :key="index"
-      class="home"
-      v-loading="loading"
-    >
-      <h1 class="titulo-categoria">
-        {{ categoria.name }}
-      </h1>
-
-      <div
-        v-for="(subcategoria, index) in categoria.subcategorias"
-        :key="index"
-        style="z-index: 1"
-      >
-        <Accordion>
-          <AccordionTab
-            :header="subcategoria.name"
-            style="width: 100%; margin: 0px; height: auto"
-          >
-            <div
-              v-for="(producto, index) in subcategoria.productos"
-              :key="index"
-              style="padding: 7px;"
-            >
-              <div style="display: flex;" class="nombre-precio">
-                <div style="margin: auto; width: 100%; margin: 0px">
-                  <p>{{ producto.name }}</p>
-                </div>
-
-                <div style="margin-right: 0px; width: 100%">
-                  <p style="text-align: right; "> $ {{ producto.price }} </p>
-                </div>
-              </div>
-
-              <div v-if="producto.description" class="descripcion" >
-                {{ producto.description }}
-              </div>
-            </div> 
-          </AccordionTab>
-        </Accordion>
-      </div>
-    </div>
-
-    <Button
-      type="button"
-      label="Confirmar pedido"
-      icon="pi pi-check"
-      class="btn-confirmar"
-      :badge="
-        'Cant. ' +
-        `${cantidadTotalPedido}` +
-        '   ' +
-        '$' +
-        `${precioTotalPedido}`
-      "
-      badgeClass="p-badge-success"
-      v-if="cantidadTotalPedido > 0"
-      @click="confirmarPedido()"
-    />
-
-    <div class="footer">
-      <div class="footer-section">
-        <p style="text-align: center; font-size: 20px">
-          CQC RESTAURANTE <br> 
-          <Button 
-            label="Escribir reseña" 
-            class="p-button-link" 
-            style="border: 1px solid #000; padding: 0px; color: #fff; text-decoration: none; "
-            @click="$refs.modalResenia.abrir()"
-          />
-        </p>
-      </div>
-
-      <div class="footer-section">
-        <p style="text-align: center; font-size: 20px">
-          CONTACTO
-        </p>
-
-        <div style="display: flex; justify-content: center;">
-          <span class="material-icons" style="margin-right: 5px">mail</span>
-          <a href="mailto:fernandojaviergonzalez2018@gmail.com" style="text-decoration: none; color: #fff">fernandojaviergonzalez2018@gmail.com</a>
-        </div>
-
-        <div style="display: flex; justify-content: center; margin-top: 20px">
-          <i class="pi pi-whatsapp material-icons" style="margin-right: 5px"></i>
-          <Button 
-            label="3843-407142" 
-            class="p-button-link" 
-            style="border: 1px solid #000; padding: 0px; color: #fff; text-decoration: none; "
-            @click="contactarWhatsApp()"
-          />
-          <!-- <span style="">3843-407142</span> -->
-        </div>
-
-        <div style="display: flex; justify-content: center; margin-top: 20px">
-          <i class="pi pi-map-marker material-icons" style="margin-right: 5px"></i>
-          <span style="">Av. Saavedra S/N</span>
-        </div>
-      </div>
-
-      <div class="footer-section">
-         <p style="text-align: center">
-          <a href="https://instagram.com" style="text-decoration: none; color: #fff" target="_blank">
-            <i class="pi pi-instagram material-icons" style="margin-right: 20px; font-size: 30px"></i>
-          </a>
-          
-          <a href="https://facebook.com" style="text-decoration: none; color: #fff" target="_blank">
-            <i class="pi pi-facebook material-icons" style="margin-right: 20px; font-size: 30px"></i>
-          </a>
-        </p>
-          
-      </div>
-    </div>
+    
 
     <!-- <Button
       label="Contactar"
@@ -604,6 +593,8 @@ export default {
   .footer {
     display: flex;
     background-color: #000;
+    scroll-behavior: smooth;
+
   }
 
   .footer-section {
@@ -617,9 +608,15 @@ export default {
 /* MOBILE */
 /*  */
 @media all and (max-width: 960px) {
+  .scroll-container {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
   .home {
     color: #000;
-    width: (100% - 30vh) 
+    width: (100% - 30vh);
+    margin-top: 20px;
   }
 
   .titulo-categoria {
@@ -749,22 +746,23 @@ export default {
   }
 
   .contenedor-bienvenida { 
-    height: 30vh;
-    /* background-color: blue; */
+    height: 50vh;
+    background-color: blue;
     display: flex; 
-    flex-direction: column
+    flex-direction: column;
+    margin-bottom: 20px;
   }
 
   .card-foto-local {
     margin: 0;
     /* border: 1px solid red; */
-    height: 25vh;
+    height: 50vh;
     width: 100%;
     position: relative;
   }
 
   .foto-local {
-    height: 25vh;
+    height: 50vh;
     width: 100%
   }
 
@@ -782,17 +780,34 @@ export default {
     text-align: center;
     position: absolute;
     margin-top: 16vh;
-    background: #191919;
-    color: #fff;
+    background: #b2dac2;
+    color: #666557;
     border-radius: 8px;
     box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.28);
-    padding: 5px
+    padding: 5px;
+    margin-bottom: 20px;
   }
 
   .nombre-local {
-    color: #ac28f6;
+    color: #431b13;
     font-size: 25px;
     font-family: 'Eater', cursive;
+  }
+
+  .btn-contactar {
+    background-color: #431b13;
+    color: #b2dac2;
+    border: 1px solid #431b13;
+  }
+
+  .btn-contactar:active {
+    /* box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);
+    transform: translateY(4px); */
+    background-color: #431b13 !important;
+    color: #b2dac2 !important;
+    border: 1px solid #431b13 !important;
+    
+    /* Moving button 4px to y-axis */
   }
 }
 </style>
