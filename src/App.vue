@@ -3,60 +3,14 @@
     <router-link to="/">Home</router-link>&nbsp;
     <router-link to="/about">Acerca de</router-link>
   </nav> -->
-  <div v-if="$store.state.idioma.code == 'ES'">
+  <!-- <div v-if="$store.state.idioma.code == 'ES'">
     <Menubar :model="items" class="menubar">
-      <template #start>
-        <!-- <img
-          alt="logo"
-          src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
-          height="40"
-          class="mr-2"
-        /> -->
-
-        RESTAURANTE
-      </template>
+      <template #start> RESTAURANTE </template>
       <template #end>
         <InputText placeholder="Buscar" type="text" class="inputSearch" />
-        <!-- <Dropdown
-          v-model="selectedCountry"
-          :options="countries"
-          optionLabel="name"
-          placeholder="Seleccioná un idioma"
-          class="dropdown"
-          @change="cambiarIdioma()"
-        >
-          <template #value="slotProps">
-            <div class="country-item country-item-value" v-if="slotProps.value">
-              <img
-                :src="slotProps.value.bandera"
-                style="
-                  width: 15px;
-                  height: 10px;
-                  margin-right: 10px;
-                  margin-top: 8px;
-                "
-              />
-              <div>{{ slotProps.value.name }}</div>
-            </div>
-          </template>
-          <template #option="slotProps">
-            <div class="country-item">
-              <img
-                :src="slotProps.option.bandera"
-                style="
-                  width: 15px;
-                  height: 10px;
-                  margin-right: 10px;
-                  margin-top: 8px;
-                "
-              />
-              <div>{{ slotProps.option.name }}</div>
-            </div>
-          </template>
-        </Dropdown> -->
       </template>
     </Menubar>
-  </div>
+  </div> -->
 
   <router-view />
 </template>
@@ -161,7 +115,15 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss">
+:root {
+  --primary: #b1464a;
+  --secondary: #bd6467;
+  --background: #f6f6f6;
+  --description: #a6a6a6;
+  --background-primary: #e5e5e5;
+}
+
 /*  */
 /* WEB */
 /*  */
@@ -236,16 +198,6 @@ export default {
 /* MOBILE */
 /*  */
 @media all and (max-width: 960px) {
-  ul {
-    background-color: #185e65 !important;
-    border: 1px solid #185e65 !important;
-  }
-
-  li {
-    background-color: #185e65;
-    border-bottom: 0.01px solid #b7bcb5 !important;
-  }
-
   .pi-bars {
     transition: 0.5s;
   }

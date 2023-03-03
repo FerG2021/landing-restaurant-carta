@@ -13,9 +13,9 @@ import PrimeVue from "primevue/config";
 // import "primevue/resources/primevue.min.css"; //core css
 // import "primeicons/primeicons.css";
 
-import 'primevue/resources/themes/saga-blue/theme.css';       //theme
-import 'primevue/resources/primevue.min.css';                //core css
-import 'primeicons/primeicons.css';                          //icons
+import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import "primevue/resources/primevue.min.css"; //core css
+import "primeicons/primeicons.css"; //icons
 
 // prime flex
 import "primeflex/primeflex.css";
@@ -73,16 +73,28 @@ import ToastService from "primevue/toastservice";
 import ProgressSpinner from "primevue/progressspinner";
 
 // Rating
-import Rating from 'primevue/rating';
+import Rating from "primevue/rating";
 
 // Textarea
-import Textarea from 'primevue/textarea';
+import Textarea from "primevue/textarea";
+
+// Image
+import Image from "primevue/image";
+
+// TiredMenu
+import TieredMenu from "primevue/tieredmenu";
+
+// ListBox
+import Listbox from "primevue/listbox";
 
 // importamos las rutas
 import router from "./router/index.js";
 
 // vuex
 import { createStore } from "vuex";
+
+// animated.css
+import "animate.css";
 
 // axios
 import axios from "axios";
@@ -119,6 +131,9 @@ createApp(App)
   .component("Dialog", Dialog)
   .component("Rating", Rating)
   .component("Textarea", Textarea)
+  .component("Image", Image)
+  .component("TieredMenu", TieredMenu)
+  .component("Listbox", Listbox)
 
   .use(router)
   .use(PrimeVue, {

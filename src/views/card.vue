@@ -1,187 +1,261 @@
 <template>
   <div class="card-principal">
-    <div class="contenedor-header">
-      <div class="header">
-        <div class="btn-hamburguesa">
-          <Button
-            icon="pi pi-angle-left"
-            class="p-button-rounded p-button-text p-button-plain icono-atras animate__animated animate__fadeInUp"
-            @click="volverHome()"
+    <div class="contenedor-spinner" v-if="loading == true">
+      <ProgressSpinner
+        aria-label="Basic ProgressSpinner"
+        style="margin: auto"
+      />
+    </div>
+
+    <div v-if="loading == false">
+      <div class="contenedor-header animate__fadeInUp">
+        <div class="header">
+          <div class="btn-hamburguesa">
+            <Button
+              icon="pi pi-angle-left"
+              class="p-button-rounded p-button-text p-button-plain icono-atras"
+              @click="volverHome()"
+            />
+          </div>
+
+          <div class="titulo animate__fadeInUp">
+            <h1>Manina</h1>
+          </div>
+
+          <div class="adicional">
+            <Button
+              icon="pi pi-bars"
+              class="p-button-rounded p-button-text p-button-plain icono-contacto"
+              @click="irContacto()"
+            />
+          </div>
+        </div>
+
+        <div class="contenedor-buscador">
+          <div class="p-inputgroup">
+            <InputText
+              placeholder="Buscar"
+              class="input-buscar"
+              type="text"
+              v-model="textoBuscar"
+              @change="getProductos()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-container" id="scroll-container">
+        <div class="contenedor-spinner" v-if="loadingBuscar == true">
+          <ProgressSpinner
+            aria-label="Basic ProgressSpinner"
+            style="margin: auto"
           />
         </div>
 
-        <div class="titulo animate__animated animate__fadeInUp">
-          <h1>Contactanos</h1>
-        </div>
+        <div class="contenedor-total" v-else>
+          <div v-if="cantProductos == 0" class="contenedor-sin-datos">
+            <div class="sin-datos">
+              <h3 class="texto-sin-productos">Sin productos</h3>
+            </div>
+          </div>
 
-        <div class="adicional">
-          <!-- <Button
-            icon="pi pi-bars"
-            class="p-button-rounded p-button-text p-button-plain icono-contacto"
-          /> -->
-        </div>
-      </div>
-    </div>
-
-    <div class="scroll-container" id="scroll-container ">
-      <div class="detalle animate__animated animate__fadeInUp">
-        Contanos tu experiencia en nuestro local, que te gustaría que mejoremos
-        o simplemente algo que quieras decirnos, lo tendremos en cuenta para
-        mejorar nuestro servicio
-      </div>
-
-      <div class="contenedor-total">
-        <div
-          class="contenedor-form animate__animated animate__fadeInUp"
-          style="margin-top: 5px; width: 100%"
-        >
-          <!-- <h5 style="margin: 0px">DNI</h5> -->
-          <form
-            @submit.prevent="handleSubmit(!v$.$invalid)"
-            class="p-fluid"
-            style="margin-top: 30px"
+          <div
+            v-for="(categoria, index) in arrayCategorias"
+            :key="index"
+            class="home"
+            v-loading="loading"
+            v-else
           >
-            <!-- Nombre -->
-            <div class="field">
-              <div class="p-float-label">
-                <InputText
-                  id="nombre"
-                  inputId="integeronly"
-                  v-model="v$.nombre.$model"
-                  style="width: 100%"
-                  :class="{ 'p-invalid': v$.nombre.$invalid && submitted }"
-                />
-                <label
-                  for="nombre"
-                  :class="{ 'p-error': v$.nombre.$invalid && submitted }"
-                  >Nombre <span style="color: red">*</span></label
-                >
-              </div>
-              <small
-                v-if="
-                  (v$.nombre.$invalid && submitted) ||
-                  v$.nombre.$pending.$response
-                "
-                class="p-error"
-                >{{
-                  v$.nombre.required.$message.replace("Value", "Nombre")
-                }}</small
+            <div v-if="categoria.subcategorias.length > 0">
+              <h1 class="titulo-categoria animate__fadeInUp">
+                <b>{{ categoria.name }}</b>
+              </h1>
+
+              <div
+                v-for="(subcategoria, index) in categoria.subcategorias"
+                :key="index"
+                style="z-index: 1"
               >
-            </div>
+                <div v-if="subcategoria.productos.length > 0">
+                  <h2 class="subcategorias">{{ subcategoria.name }}</h2>
 
-            <!-- Descripicion -->
-            <div class="field">
-              <div class="p-float-label">
-                <InputText
-                  id="email"
-                  v-model="email"
-                  toggleMask
-                  style="width: 100%"
-                  :class="{ 'p-invalid': v$.email.$invalid && submitted }"
-                />
-                <label
-                  for="email"
-                  :class="{ 'p-error': v$.email.$invalid && submitted }"
-                  >Email <span style="color: red">*</span></label
-                >
-              </div>
-              <small
-                v-if="
-                  (v$.email.$invalid && submitted) ||
-                  v$.email.$pending.$response
-                "
-                class="p-error"
+                  <div
+                    v-for="(producto, index) in subcategoria.productos"
+                    :key="index"
+                    style="padding: 7px"
+                  >
+                    <div
+                      class="carta-producto"
+                      @click="
+                        $refs.modalDetalles.abrir(
+                          categoria,
+                          subcategoria,
+                          producto
+                        )
+                      "
+                    >
+                      <div class="imagen-producto">
+                        <Image
+                          v-if="producto.imageID != 'null'"
+                          :src="producto.image"
+                          alt="Image"
+                          width="40"
+                          class="ver-imagen"
+                          imageStyle="border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);padding: 3px; height: 6vh; width: 6vh; margin: auto"
+                        />
+
+                        <img
+                          v-else
+                          src="../assets/productosinimagen.png"
+                          class="producto-sin-imagen"
+                        />
+                      </div>
+                      <div class="descripcion-producto">
+                        <div class="descripcion-producto-nombre">
+                          <p>{{ producto.name }}</p>
+                        </div>
+                        <div class="descripcion-producto-detalles">
+                          <p>
+                            <b>$ {{ producto.price }}</b>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <Accordion>
+              <AccordionTab
+                :header="subcategoria.name"
+                style="width: 100%; margin: 0px; height: auto"
               >
-                {{ v$.email.required.$message.replace("Value", "Email") }}
-              </small>
-            </div>
-
-            <!-- Precio -->
-            <div class="field">
-              <div class="p-float-label">
-                <Rating
-                  id="rating"
-                  v-model="rating"
-                  :cancel="false"
-                  style="width: 100%"
-                />
-              </div>
-            </div>
-
-            <!-- Descripicion -->
-            <div class="field">
-              <div class="p-float-label">
-                <Textarea
-                  id="descripcion"
-                  v-model="descripcion"
-                  :autoResize="true"
-                  rows="5"
-                  cols="30"
-                  style="width: 100%"
-                  :class="{ 'p-invalid': v$.descripcion.$invalid && submitted }"
-                />
-                <label
-                  for="descripcion"
-                  :class="{ 'p-error': v$.descripcion.$invalid && submitted }"
-                  >Descripción <span style="color: red">*</span></label
+                <div
+                  v-for="(producto, index) in subcategoria.productos"
+                  :key="index"
+                  style="padding: 7px"
                 >
-              </div>
-              <small
-                v-if="
-                  (v$.descripcion.$invalid && submitted) ||
-                  v$.descripcion.$pending.$response
-                "
-                class="p-error"
-              >
-                {{
-                  v$.descripcion.required.$message.replace(
-                    "Value",
-                    "descripcion"
-                  )
-                }}
-              </small>
-            </div>
+                  <div style="display: flex" class="nombre-precio">
+                    <div style="margin: auto; width: 100%; margin: 0px">
+                      <p>{{ producto.name }}</p>
+                    </div>
 
-            <Button
-              label="Guardar"
-              type="submit"
-              class="p-button-raised p-button-text p-button-rounded btn-guardar"
-              :loading="loadingBtnGuardar"
-            />
-          </form>
+                    <div style="margin-right: 0px; width: 100%">
+                      <p style="text-align: right">$ {{ producto.price }}</p>
+                    </div>
+                  </div>
+
+                  <div v-if="producto.description" class="descripcion">
+                    {{ producto.description }}
+                  </div>
+                </div>
+              </AccordionTab>
+            </Accordion> -->
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="contenedor-redes-sociales">
-          <div class="contenedor-facebook">
-            <Button
-              icon="pi pi-facebook"
-              class="p-button-rounded p-button-danger btn-redes-sociales animate__animated animate__fadeInUp"
-              @click="abrirFacebook()"
-            />
+        <!-- <div class="footer" id="footer">
+          <div class="footer-section">
+            <p style="text-align: center; font-size: 20px">
+              CQC RESTAURANTE <br />
+              <Button
+                label="Escribir reseña"
+                class="p-button-link"
+                style="
+                  border: 1px solid #000;
+                  padding: 0px;
+                  color: #fff;
+                  text-decoration: none;
+                "
+                @click="$refs.modalResenia.abrir()"
+              />
+            </p>
           </div>
-          <div class="contenedor-twitter">
-            <Button
-              icon="pi pi-twitter"
-              class="p-button-rounded p-button-danger btn-redes-sociales animate__animated animate__fadeInUp"
-              @click="abrirTwitter()"
-            />
+
+          <div class="footer-section">
+            <p style="text-align: center; font-size: 20px">CONTACTO</p>
+
+            <div style="display: flex; justify-content: center">
+              <span class="material-icons" style="margin-right: 5px">mail</span>
+              <a
+                href="mailto:fernandojaviergonzalez2018@gmail.com"
+                style="text-decoration: none; color: #fff"
+                >fernandojaviergonzalez2018@gmail.com</a
+              >
+            </div>
+
+            <div
+              style="display: flex; justify-content: center; margin-top: 20px"
+            >
+              <i
+                class="pi pi-whatsapp material-icons"
+                style="margin-right: 5px"
+              ></i>
+              <Button
+                label="3843-407142"
+                class="p-button-link"
+                style="
+                  border: 1px solid #000;
+                  padding: 0px;
+                  color: #fff;
+                  text-decoration: none;
+                "
+                @click="contactarWhatsApp()"
+              />
+            </div>
+
+            <div
+              style="display: flex; justify-content: center; margin-top: 20px"
+            >
+              <i
+                class="pi pi-map-marker material-icons"
+                style="margin-right: 5px"
+              ></i>
+              <span style="">Av. Saavedra S/N</span>
+            </div>
           </div>
-          <div class="contenedor-instagram">
-            <Button
-              icon="pi pi-instagram"
-              class="p-button-rounded p-button-danger btn-redes-sociales animate__animated animate__fadeInUp"
-              @click="abrirInstagram()"
-            />
+
+          <div class="footer-section">
+            <p style="text-align: center">
+              <a
+                href="https://instagram.com"
+                style="text-decoration: none; color: #fff"
+                target="_blank"
+              >
+                <i
+                  class="pi pi-instagram material-icons"
+                  style="margin-right: 20px; font-size: 30px"
+                ></i>
+              </a>
+
+              <a
+                href="https://facebook.com"
+                style="text-decoration: none; color: #fff"
+                target="_blank"
+              >
+                <i
+                  class="pi pi-facebook material-icons"
+                  style="margin-right: 20px; font-size: 30px"
+                ></i>
+              </a>
+            </p>
           </div>
-          <div class="contenedor-whatsapp">
-            <Button
-              icon="pi pi-whatsapp"
-              class="p-button-rounded p-button-danger btn-redes-sociales animate__animated animate__fadeInUp"
-              @click="abrirWhatsApp()"
-            />
-          </div>
-        </div>
+        </div> -->
       </div>
+
+      <!-- <Button
+      label="Contactar"
+      class="contacto-contenido-contactar p-button-link"
+      @click="contactarGmail()"
+    /> -->
+
+      <modal-resenia ref="modalResenia"></modal-resenia>
+
+      <modal-detalles ref="modalDetalles"></modal-detalles>
+
+      <ConfirmDialog></ConfirmDialog>
+      <Toast />
     </div>
   </div>
 </template>
@@ -190,13 +264,7 @@
 import ModalResenia from "./modales/resenia.vue";
 import ModalDetalles from "./modales/detalles.vue";
 
-import { email, required } from "@vuelidate/validators";
-import { useVuelidate } from "@vuelidate/core";
-import { helpers } from "@vuelidate/validators";
-
 export default {
-  setup: () => ({ v$: useVuelidate() }),
-
   name: "Home",
 
   components: {
@@ -222,36 +290,45 @@ export default {
 
       // TIRED MENU
       menu: null,
+      items: [
+        {
+          label: "File",
+          icon: "pi pi-fw pi-file",
+          to: "/",
+        },
+        {
+          label: "Edit",
+          icon: "pi pi-fw pi-pencil",
+        },
+        {
+          label: "Users",
+          icon: "pi pi-fw pi-user",
+        },
+        {
+          label: "Events",
+          icon: "pi pi-fw pi-calendar",
+        },
+        {
+          separator: true,
+        },
+        {
+          label: "Quit",
+          icon: "pi pi-fw pi-power-off",
+        },
+      ],
 
-      // form
-      nombre: "",
-      email: "",
-      rating: null,
-      descripcion: null,
-    };
-  },
-
-  validations() {
-    return {
-      nombre: {
-        required: helpers.withMessage("El nombre es requerido", required),
-        // email,
-      },
-
-      email: {
-        required: helpers.withMessage("El email es requerido", required),
-        // email,
-      },
-
-      rating: {
-        required: helpers.withMessage("El precio es requerido", required),
-        // email,
-      },
-
-      descripcion: {
-        required: helpers.withMessage("La descripición es requerida", required),
-        // email,
-      },
+      countries: [
+        { label: "Australia", value: "AU" },
+        { label: "Brazil", value: "BR" },
+        { label: "China", value: "CN" },
+        { label: "Egypt", value: "EG" },
+        { label: "France", value: "FR" },
+        { label: "Germany", value: "DE" },
+        { label: "India", value: "IN" },
+        { label: "Japan", value: "JP" },
+        { label: "Spain", value: "ES" },
+        { label: "United States", value: "US" },
+      ],
     };
   },
 
@@ -451,37 +528,9 @@ export default {
       this.$router.push("/");
     },
 
-    abrirFacebook() {
-      let url = "https://www.facebook.com";
-      window.open(url, "_blank");
-    },
-
-    abrirTwitter() {
-      let url = "https://www.twitter.com";
-      window.open(url, "_blank");
-    },
-
-    abrirInstagram() {
-      let url = "https://www.instagram.com";
-      window.open(url, "_blank");
-    },
-
-    async abrirWhatsApp() {
-      let mensaje = `¡Hola Fernando!"`;
-
-      mensaje = mensaje + "\n";
-
-      mensaje =
-        mensaje +
-        " Te envío este mensaje porque estoy interesado en contactarme con vos por motivos laborales, por favor contactame a la brevedad ";
-
-      mensaje = mensaje + "\n";
-
-      mensaje = mensaje + "¡¡¡Saludos!!!";
-
-      let url = encodeURI("https://wa.me/" + 3843407142 + "?text=" + mensaje);
-
-      window.open(url, "_blank");
+    irContacto() {
+      this.loadingBtnAbrirCarta = true;
+      this.$router.push("/contact");
     },
 
     toggle(event) {
@@ -670,6 +719,24 @@ export default {
       });
     },
 
+    async contactarWhatsApp() {
+      let mensaje = `¡Hola Fernando!"`;
+
+      mensaje = mensaje + "\n";
+
+      mensaje =
+        mensaje +
+        " Te envío este mensaje porque estoy interesado en contactarme con vos por motivos laborales, por favor contactame a la brevedad ";
+
+      mensaje = mensaje + "\n";
+
+      mensaje = mensaje + "¡¡¡Saludos!!!";
+
+      let url = encodeURI("https://wa.me/" + 3843407142 + "?text=" + mensaje);
+
+      window.open(url, "_blank");
+    },
+
     async contactarLinkedin() {
       let url = "https://www.linkedin.com/in/fernandogonzalez2021/";
 
@@ -685,7 +752,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .nombre-precio {
   color: #000;
   padding: 0px;
@@ -710,15 +777,29 @@ export default {
 /* MOBILE */
 /*  */
 @media all and (max-width: 960px) {
-  .card-principal {
-    background-color: var(--background-primary);
+  .scroll-container {
+    /* overflow-y: scroll; */
+    /* scroll-behavior: smooth; */
+    padding: 14px;
+    margin-top: 18vh;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    /* border: 1px solid green; */
+    width: 100%;
+
+    /* height: 100%;
+    height: -webkit-calc(100% - 18vh);
+    height: -moz-calc(100% - 18vh);
+    height: calc(100% - 18vh); */
   }
 
   .contenedor-header {
     position: fixed;
     /* border: 1px solid red; */
     width: 100%;
-    height: 10vh;
+    height: 18vh;
     margin-top: 0px;
     z-index: 10;
     background-color: var(--background-primary);
@@ -745,23 +826,9 @@ export default {
   .icono-atras {
     margin: auto;
     margin-left: 20px;
+    color: var(--primary);
     font-size: 25px;
-  }
-
-  .titulo {
-    margin: auto;
-    height: 100%;
-    width: 100%;
-    /* border: 1px solid red; */
-    display: flex;
-    align-items: center;
-    background-color: var(--background-primary);
-    color: #000;
-  }
-
-  .titulo h1 {
-    text-align: center;
-    width: 100%;
+    background-color: var(--primary);
   }
 
   .adicional {
@@ -771,16 +838,6 @@ export default {
     /* border: 1px solid red; */
     align-items: center;
     display: flex;
-  }
-
-  .scroll-container {
-    padding: 14px;
-    margin-top: 10vh;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
-    /* border: 1px solid green; */
-    width: 100%;
   }
 
   .icono-contacto {
@@ -807,84 +864,25 @@ export default {
     /* border: 1px solid var(--primary); */
   }
 
-  .contenedor-detalle {
-    width: 100%;
-    background-color: var(--background-primary);
-    color: #000;
-    padding: 10px;
-    text-align: center;
-  }
-
-  .detalle {
-    width: 100%;
-    background-color: var(--background-primary);
-    color: #000;
-  }
-
-  .contenedor-total {
+  .titulo {
     margin: auto;
+    height: 100%;
     width: 100%;
     /* border: 1px solid red; */
-    height: 100vh;
-    margin-top: 20px;
-  }
-
-  .contenedor-form {
-    padding: 10px;
-    /* border: 1px solid green; */
-    border-radius: 20px;
-    background-color: #fff;
-  }
-
-  .btn-guardar {
-    margin: auto;
-    color: #fff;
-    width: 100%;
-    background-color: var(--secondary);
-    box-shadow: none;
-    margin-bottom: 20px;
-    border: 1px solid var(--secondary);
-  }
-
-  .btn-guardar:active {
-    margin: auto;
-    color: #fff;
-    width: 100%;
-    background-color: var(--secondary);
-    box-shadow: none;
-    border: 1px solid var(--secondary);
-  }
-
-  .contenedor-redes-sociales {
     display: flex;
+    align-items: center;
+  }
+
+  .titulo h1 {
+    text-align: center;
     width: 100%;
-    margin-top: 20px;
   }
 
-  .contenedor-facebook {
+  .adicional {
     margin: auto;
-  }
-
-  .contenedor-twitter {
-    margin: auto;
-  }
-
-  .contenedor-instagram {
-    margin: auto;
-  }
-
-  .contenedor-whatsapp {
-    margin: auto;
-  }
-
-  .btn-redes-sociales {
-    background-color: var(--primary);
-    border: 1px solid var(--primary);
-  }
-
-  .btn-redes-sociales:active {
-    background-color: var(--secondary);
-    border: 1px solid var(--primary);
+    height: 100%;
+    width: 100%;
+    /* border: 1px solid red; */
   }
 
   .contenedor-buscador {
@@ -900,6 +898,13 @@ export default {
     align-items: center;
     margin: auto;
     /* border: 1px solid red; */
+  }
+
+  .contenedor-total {
+    margin: auto;
+    width: 100%;
+    /* border: 1px solid red; */
+    height: 100vh;
   }
 
   .contenedor-sin-datos {
@@ -934,6 +939,10 @@ export default {
     border-bottom-right-radius: 16px !important;
     background-color: var(--primary) !important;
     border: 1px solid var(--primary) !important;
+  }
+
+  .card-principal {
+    background-color: var(--background);
   }
 
   .contenedor-spinner {

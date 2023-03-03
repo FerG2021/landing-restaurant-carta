@@ -9,7 +9,7 @@
       class="flex justify-content-center"
       :draggable="false"
     >
-      <template #header icon="pi pi-refresh" style="margin: 0px" class="s">
+      <template #header>
         <h3 style="margin: 0px">
           <span class="material-icons">star</span> Escribir reseña
         </h3>
@@ -17,7 +17,9 @@
 
       <div>
         <p style="text-align: center">
-          Contanos tu experiencia en nuestro local, que te gustaría que mejoremos o simplemente algo que quieras decirnos, lo tendremos en cuenta para mejorar nuestro servicio
+          Contanos tu experiencia en nuestro local, que te gustaría que
+          mejoremos o simplemente algo que quieras decirnos, lo tendremos en
+          cuenta para mejorar nuestro servicio
         </p>
       </div>
 
@@ -74,29 +76,38 @@
             </div>
             <small
               v-if="
-                (v$.email.$invalid && submitted) ||
-                v$.email.$pending.$response
+                (v$.email.$invalid && submitted) || v$.email.$pending.$response
               "
               class="p-error"
             >
-              {{
-                v$.email.required.$message.replace("Value", "Email")
-              }}
+              {{ v$.email.required.$message.replace("Value", "Email") }}
             </small>
           </div>
 
           <!-- Precio -->
           <div class="field">
             <div class="p-float-label">
-              <Rating id="rating" v-model="rating" :cancel="false" style="width: 100%" />
+              <Rating
+                id="rating"
+                v-model="rating"
+                :cancel="false"
+                style="width: 100%"
+              />
             </div>
           </div>
 
           <!-- Descripicion -->
           <div class="field">
             <div class="p-float-label">
-              <Textarea id="descripcion" v-model="descripcion" :autoResize="true" rows="5" cols="30" style="width: 100%"
-                :class="{ 'p-invalid': v$.descripcion.$invalid && submitted }"/>
+              <Textarea
+                id="descripcion"
+                v-model="descripcion"
+                :autoResize="true"
+                rows="5"
+                cols="30"
+                style="width: 100%"
+                :class="{ 'p-invalid': v$.descripcion.$invalid && submitted }"
+              />
               <label
                 for="descripcion"
                 :class="{ 'p-error': v$.descripcion.$invalid && submitted }"
@@ -115,7 +126,6 @@
               }}
             </small>
           </div>
-
 
           <Button
             label="Guardar"
@@ -143,7 +153,6 @@ export default {
       submitted: false,
       isFormValid: false,
       loadingBtnGuardar: false,
-
 
       // form
       nombre: "",
@@ -234,13 +243,12 @@ export default {
     },
 
     async guardar() {
-
       let params = {
         nombre: this.nombre,
         email: this.email,
         valoracion: this.rating,
         descripcion: this.descripcion,
-      }
+      };
 
       await this.axios.post("/api/resenia", params).then((response) => {
         console.log(response.data);
