@@ -44,6 +44,8 @@
         </div>
       </div>
 
+      <!-- {{ arrayCategorias }} -->
+
       <div class="scroll-container" id="scroll-container">
         <div class="contenedor-spinner" v-if="loadingBuscar == true">
           <ProgressSpinner
@@ -66,7 +68,12 @@
             v-loading="loading"
             v-else
           >
-            <div v-if="categoria.subcategorias.length > 0">
+            <div
+              v-if="
+                categoria.subcategorias.length > 0 &&
+                categoria.cantProductosCat > 0
+              "
+            >
               <h1 class="titulo-categoria animate__fadeInUp">
                 <b>{{ categoria.name }}</b>
               </h1>
@@ -436,12 +443,16 @@ export default {
 
             this.cantProductos = this.arrayProductos.length;
 
-            let arrayProductoAux = [];
+            let arrayProductoAux = [],
+              cantProductosCat = 0;
             this.arrayCategoriasMostrar.forEach((elemento) => {
+              cantProductosCat = 0;
+
               elemento.subcategorias.forEach((ele) => {
                 arrayProductoAux = [];
                 this.arrayProductos.forEach((el) => {
                   if (ele.id == el.id_category) {
+                    cantProductosCat++;
                     el.cantidad = 0;
                     arrayProductoAux.push(el);
                   }
@@ -449,6 +460,8 @@ export default {
 
                 ele.productos = arrayProductoAux;
               });
+
+              elemento.cantProductosCat = cantProductosCat;
             });
 
             console.log("this.arrayCategoriasMostrar FINAL");

@@ -70,7 +70,7 @@
             </div>
 
             <!-- Descripicion -->
-            <div class="field">
+            <div class="field" style="margin-top: 30px">
               <div class="p-float-label">
                 <InputText
                   id="email"
@@ -96,8 +96,8 @@
               </small>
             </div>
 
-            <!-- Precio -->
-            <div class="field">
+            <!-- Rating -->
+            <div class="field" style="margin-top: 30px" c>
               <div class="p-float-label">
                 <Rating
                   id="rating"
@@ -109,7 +109,7 @@
             </div>
 
             <!-- Descripicion -->
-            <div class="field">
+            <div class="field" style="margin-top: 30px">
               <div class="p-float-label">
                 <Textarea
                   id="descripcion"
@@ -781,6 +781,7 @@ export default {
     z-index: 1;
     /* border: 1px solid green; */
     width: 100%;
+    display: block;
   }
 
   .icono-contacto {
@@ -816,12 +817,14 @@ export default {
   }
 
   .detalle {
+    display: block;
     width: 100%;
     background-color: var(--background-primary);
     color: #000;
   }
 
   .contenedor-total {
+    display: block;
     margin: auto;
     width: 100%;
     /* border: 1px solid red; */
