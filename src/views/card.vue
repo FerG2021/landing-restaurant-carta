@@ -8,9 +8,9 @@
     </div>
 
     <div v-if="loading == false">
-      <div class="contenedor-header animate__fadeInUp">
+      <div class="contenedor-header">
         <div class="header">
-          <div class="btn-hamburguesa">
+          <div class="btn-hamburguesa animate__animated animate__fadeInLeft">
             <Button
               icon="pi pi-angle-left"
               class="p-button-rounded p-button-text p-button-plain icono-atras"
@@ -18,11 +18,11 @@
             />
           </div>
 
-          <div class="titulo animate__fadeInUp">
+          <div class="titulo animate__animated animate__fadeInDown">
             <h1>Manina</h1>
           </div>
 
-          <div class="adicional">
+          <div class="adicional animate__animated animate__fadeInRight">
             <Button
               icon="pi pi-bars"
               class="p-button-rounded p-button-text p-button-plain icono-contacto"
@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="contenedor-buscador">
+        <div class="contenedor-buscador animate__animated animate__fadeInUp">
           <div class="p-inputgroup">
             <InputText
               placeholder="Buscar"
@@ -54,7 +54,10 @@
           />
         </div>
 
-        <div class="contenedor-total" v-else>
+        <div
+          class="contenedor-total animate__animated animate__fadeInUp"
+          v-else
+        >
           <div v-if="cantProductos == 0" class="contenedor-sin-datos">
             <div class="sin-datos">
               <h3 class="texto-sin-productos">Sin productos</h3>

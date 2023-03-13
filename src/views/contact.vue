@@ -1,16 +1,18 @@
 <template>
   <div class="card-principal">
+    <Toast />
+
     <div class="contenedor-header">
       <div class="header">
         <div class="btn-hamburguesa">
           <Button
             icon="pi pi-angle-left"
-            class="p-button-rounded p-button-text p-button-plain icono-atras animate__animated animate__fadeInUp"
+            class="p-button-rounded p-button-text p-button-plain icono-atras animate__animated animate__fadeInLeft"
             @click="volverHome()"
           />
         </div>
 
-        <div class="titulo animate__animated animate__fadeInUp">
+        <div class="titulo animate__animated animate__fadeInDown">
           <h1>Contactanos</h1>
         </div>
 
@@ -145,7 +147,8 @@
             <Button
               label="Guardar"
               type="submit"
-              class="p-button-raised p-button-text p-button-rounded btn-guardar"
+              class="p-button-rounded btn-guardar"
+              severity="danger"
               :loading="loadingBtnGuardar"
             />
           </form>
@@ -206,6 +209,8 @@ export default {
 
   data() {
     return {
+      submitted: false,
+      isFormValid: false,
       loading: true,
       loadingBuscar: false,
       arraySubcategorias: [],
@@ -228,6 +233,8 @@ export default {
       email: "",
       rating: null,
       descripcion: null,
+
+      loadingBtnGuardar: false,
     };
   },
 
@@ -257,7 +264,6 @@ export default {
 
   created() {
     this.getSubcategorias();
-    this.getQuery();
   },
 
   watch: {
@@ -268,12 +274,6 @@ export default {
   },
 
   methods: {
-    getQuery() {
-      console.log("this.$route.query");
-      console.log(this.$route.query);
-      this.idMesa = this.$route.query.mesa;
-    },
-
     async getSubcategorias() {
       this.loading = true;
       await this.axios
@@ -386,69 +386,153 @@ export default {
       this.loadingBuscar = false;
     },
 
-    async getProductosBuscar() {
-      // let params = {};
-      // if (this.textoBuscar != null && this.textoBuscar != "") {
-      //   params.nombre = this.textoBuscar;
-      // } else {
-      //   params.nombre = null;
-      // }
+    // async getProductosBuscar() {
+    //   // let params = {};
+    //   // if (this.textoBuscar != null && this.textoBuscar != "") {
+    //   //   params.nombre = this.textoBuscar;
+    //   // } else {
+    //   //   params.nombre = null;
+    //   // }
 
-      // this.arrayCategoriasMostrar = [];
-      this.arrayProductos = [];
+    //   // this.arrayCategoriasMostrar = [];
+    //   this.arrayProductos = [];
 
-      await this.axios
-        .get("/api/productoBuscar/" + this.textoBuscar)
-        .then((response) => {
-          if (response.data.code == 200) {
-            console.log("response.data PRODUCTO");
-            console.log(response.data);
+    //   await this.axios
+    //     .get("/api/productoBuscar/" + this.textoBuscar)
+    //     .then((response) => {
+    //       if (response.data.code == 200) {
+    //         console.log("response.data PRODUCTO");
+    //         console.log(response.data);
 
-            response.data.data.forEach((elemento) => {
-              if (elemento.stock == 1) {
-                this.arrayProductos.push(elemento);
-              }
-            });
+    //         response.data.data.forEach((elemento) => {
+    //           if (elemento.stock == 1) {
+    //             this.arrayProductos.push(elemento);
+    //           }
+    //         });
 
-            this.arrayProductos = response.data.data;
-            console.log("this.arrayProductos");
-            console.log(this.arrayProductos);
+    //         this.arrayProductos = response.data.data;
+    //         console.log("this.arrayProductos");
+    //         console.log(this.arrayProductos);
 
-            this.cantProductos = this.arrayProductos.length;
-            console.log("SDLFJSLKJFKLDS");
+    //         this.cantProductos = this.arrayProductos.length;
+    //         console.log("SDLFJSLKJFKLDS");
 
-            let arrayProductoAux = [];
-            this.arrayCategoriasMostrar.forEach((elemento) => {
-              elemento.subcategorias.forEach((ele) => {
-                arrayProductoAux = [];
-                this.arrayProductos.forEach((el) => {
-                  if (ele.id == el.id_category) {
-                    el.cantidad = 0;
-                    arrayProductoAux.push(el);
-                  }
-                });
+    //         let arrayProductoAux = [];
+    //         this.arrayCategoriasMostrar.forEach((elemento) => {
+    //           elemento.subcategorias.forEach((ele) => {
+    //             arrayProductoAux = [];
+    //             this.arrayProductos.forEach((el) => {
+    //               if (ele.id == el.id_category) {
+    //                 el.cantidad = 0;
+    //                 arrayProductoAux.push(el);
+    //               }
+    //             });
 
-                ele.productos = arrayProductoAux;
-              });
-            });
+    //             ele.productos = arrayProductoAux;
+    //           });
+    //         });
 
-            console.log("this.cantProductos LENGHT");
-            console.log(this.cantProductos);
+    //         console.log("this.cantProductos LENGHT");
+    //         console.log(this.cantProductos);
 
-            console.log("this.arrayCategoriasMostrar FINAL");
-            console.log(this.arrayCategoriasMostrar);
+    //         console.log("this.arrayCategoriasMostrar FINAL");
+    //         console.log(this.arrayCategoriasMostrar);
 
-            console.log("this.arrayProductos FINAL");
-            console.log(this.arrayProductos);
-          }
-        });
+    //         console.log("this.arrayProductos FINAL");
+    //         console.log(this.arrayProductos);
+    //       }
+    //     });
 
-      this.loading = false;
-    },
+    //   this.loading = false;
+    // },
 
     volverHome() {
       this.loadingBtnAbrirCarta = true;
       this.$router.push("/");
+    },
+
+    handleSubmit(isFormValid) {
+      console.log("isFormValid");
+      console.log(isFormValid);
+
+      this.isFormValid = isFormValid;
+      console.log("entro");
+
+      this.submitted = true;
+
+      if (!isFormValid) {
+        return;
+      }
+
+      this.toggleDialog();
+    },
+
+    toggleDialog() {
+      console.log("entro");
+      this.showMessage = !this.showMessage;
+
+      this.guardar();
+
+      // if (!this.showMessage) {
+      //   this.resetForm();
+      // } else {
+      //   this.guardar();
+      // }
+    },
+
+    async guardar() {
+      this.loadingBtnGuardar = true;
+
+      let params = {
+        nombre: this.nombre,
+        email: this.email,
+        valoracion: this.rating,
+        descripcion: this.descripcion,
+      };
+
+      await this.axios.post("/api/resenia", params).then((response) => {
+        console.log(response.data);
+        if (response.data.code == 200) {
+          this.$toast.add({
+            severity: "success",
+            summary: "Mensaje de confirmación",
+            detail: "Reseña generada con éxito",
+            life: 3000,
+          });
+
+          console.log("reseña guardada");
+
+          this.display = false;
+          this.$emit("actualizarTabla");
+        } else {
+          console.log("response.data.data");
+          console.log(response.data.data);
+
+          this.$toast.add({
+            severity: "error",
+            summary: "Se ha producido un error",
+            detail: response.data.data,
+            life: 5000,
+          });
+
+          // for (const property in response.data.data) {
+          //   this.$toast.add({
+          //     severity: "error",
+          //     summary: "Se ha producido un error",
+          //     detail: `${response.data.data[property]}`,
+          //     life: 5000,
+          //   });
+          // }
+        }
+      });
+
+      this.loadingBtnGuardar = false;
+
+      // limpiar campos
+      this.nombre = "";
+      this.email = "";
+      this.rating = null;
+      this.descripcion = null;
     },
 
     abrirFacebook() {
@@ -480,204 +564,6 @@ export default {
       mensaje = mensaje + "¡¡¡Saludos!!!";
 
       let url = encodeURI("https://wa.me/" + 3843407142 + "?text=" + mensaje);
-
-      window.open(url, "_blank");
-    },
-
-    toggle(event) {
-      this.$refs.menu.toggle(event);
-
-      var btn = document.getElementById("btn-buscador");
-      btn.style.backgroundColor = "#f6f6f6";
-      // btn.style.rotate = "90deg";
-
-      console.log("btn.style");
-      console.log(btn.style);
-
-      if (btn.style.rotate == "90deg") {
-        console.log("entra 90");
-        btn.style.transition = "4seg";
-        btn.style.rotate = "0deg";
-      } else {
-        console.log("entra 0");
-        btn.style.transition = "4seg";
-        btn.style.rotate = "90deg";
-      }
-
-      console.log("btn.style.rotate");
-      console.log(btn.style.rotate);
-
-      // btn.style.border = "#b1464a";
-
-      // this.menu.toggle();
-    },
-
-    cambia() {
-      console.log("cambia");
-      console.log(this.items);
-    },
-
-    buscar() {
-      console.log("this.textoBuscar");
-      console.log(this.textoBuscar);
-    },
-
-    agregarProductoNuevo(producto) {
-      console.log("producto");
-      console.log(producto);
-
-      producto.cantidad = 1;
-
-      let existeProducto = this.arrayPedidos.find(
-        (element) => element.id == producto.id
-      );
-
-      console.log("existeProducto");
-      console.log(existeProducto);
-
-      if (existeProducto == undefined) {
-        this.arrayPedidos.push(producto);
-      }
-
-      // recorro el array de los pedidos para sumar la cantidad de prodcutos pedidos y mostrarlos
-      this.cantidadTotalPedido = 0;
-      this.precioTotalPedido = 0;
-      this.arrayPedidos.forEach((elemento) => {
-        this.cantidadTotalPedido = this.cantidadTotalPedido + elemento.cantidad;
-        this.precioTotalPedido =
-          this.precioTotalPedido +
-          parseFloat(elemento.price) * elemento.cantidad;
-      });
-
-      console.log("this.precioTotalPedido");
-      console.log(this.precioTotalPedido);
-    },
-
-    agregarCantidadProducto(producto) {
-      console.log("producto");
-      console.log(producto);
-
-      let existeProducto = this.arrayPedidos.find(
-        (element) => element.id == producto.id
-      );
-
-      console.log("existeProducto");
-      console.log(existeProducto);
-
-      if (!existeProducto) {
-        this.arrayPedidos.push(producto);
-      }
-
-      // recorro el array de los pedidos para sumar la cantidad de prodcutos pedidos y mostrarlos
-      this.cantidadTotalPedido = 0;
-      this.precioTotalPedido = 0;
-
-      this.arrayPedidos.forEach((elemento) => {
-        console.log("elemento");
-        console.log(elemento);
-
-        this.cantidadTotalPedido = this.cantidadTotalPedido + elemento.cantidad;
-        this.precioTotalPedido =
-          this.precioTotalPedido +
-          parseFloat(elemento.price) * elemento.cantidad;
-      });
-
-      console.log("this.arrayPedidos");
-      console.log(this.arrayPedidos);
-    },
-
-    abrirDetalles() {
-      console.log("abrir detalles");
-    },
-
-    usoBlur() {
-      console.log("blur");
-      // recorro el array de los pedidos para sumar la cantidad de prodcutos pedidos y mostrarlos
-      this.cantidadTotalPedido = 0;
-      this.arrayPedidos.forEach((elemento) => {
-        this.cantidadTotalPedido = this.cantidadTotalPedido + elemento.cantidad;
-      });
-    },
-
-    confirmarPedido() {
-      console.log("this.arrayPedidos");
-      console.log(this.arrayPedidos);
-
-      // tomo solo los elementos que tienen cantidaa mayor que 0
-      let arrayPedidosEnviar = this.arrayPedidos.filter(
-        (elemento) => elemento.cantidad > 0
-      );
-
-      console.log("arrayPedidosEnviar");
-      console.log(arrayPedidosEnviar);
-
-      this.$confirm.require({
-        header: "Confirmación",
-        message: "¿Está seguro que desea confirmar el pedido?",
-        icon: "pi pi-info-circle",
-        acceptClass: "p-button-success",
-        acceptIcon: "pi pi-check",
-        rejectIcon: "pi pi-times",
-        accept: () => {
-          this.enviarPedido(arrayPedidosEnviar);
-        },
-        reject: () => {
-          // this.$toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
-        },
-        onHide: () => {
-          // this.$toast.add({severity:'error', summary:'Hide', detail:'You have hidden', life: 3000});
-        },
-      });
-    },
-
-    async enviarPedido(arrayPedidosEnviar) {
-      let params = {
-        idMesa: this.idMesa,
-        arrayOrden: JSON.stringify(arrayPedidosEnviar),
-        precio: this.precioTotalPedido,
-        estado: "Comenzada",
-      };
-
-      // await this.axios.get("/sanctum/csrf-cookie").then((response) => {
-      //   console.log("response");
-      //   console.log(response);
-      // });
-
-      // let credentials = {
-      //   email: "invitado",
-      //   password: "40899041",
-      // };
-
-      // await this.axios.post("/login", credentials).then((res) => {
-      //   console.log("res");
-      //   console.log(res);
-      // });
-
-      await this.axios.post("/api/orden", params).then((response) => {
-        if (response.data.code == 200) {
-          console.log("response.data PRODUCTO");
-          console.log(response.data);
-
-          this.$toast.add({
-            severity: "success",
-            summary: "Pedido confirmado con éxito",
-            detail: "En breve te traeremos tu pedido. Muchas gracias!",
-            life: 3000,
-          });
-          console.log("arrayPedidosEnviar");
-          console.log(arrayPedidosEnviar);
-        }
-      });
-    },
-
-    async contactarLinkedin() {
-      let url = "https://www.linkedin.com/in/fernandogonzalez2021/";
-
-      window.open(url, "_blank");
-    },
-
-    async contactarGmail() {
-      let url = "mailto:fernandojaviergonzalez2018@gmail.com";
 
       window.open(url, "_blank");
     },
@@ -853,7 +739,16 @@ export default {
     margin: auto;
     color: #fff;
     width: 100%;
-    background-color: var(--secondary);
+    background-color: var(--secondary) !important;
+    box-shadow: none;
+    border: 1px solid var(--secondary);
+  }
+
+  .btn-guardar:focus {
+    margin: auto;
+    color: #fff;
+    width: 100%;
+    background-color: var(--secondary) !important;
     box-shadow: none;
     border: 1px solid var(--secondary);
   }
