@@ -9,16 +9,25 @@
       class="flex justify-content-center card-detalle"
       :draggable="false"
     >
-      <div style="margin-top: 5px; width: 100%">
-        <Image
-          v-if="producto.imageID != 'null'"
-          :src="producto.image"
-          alt="Image"
-          width="40"
-          preview
-          class="ver-imagen"
-          imageStyle="border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);padding: 3px; width: 100%; border-radius: 20px"
+      <div class="contenedor-spinner" v-if="loading == true">
+        <ProgressSpinner
+          aria-label="Basic ProgressSpinner"
+          style="margin: auto"
         />
+      </div>
+
+      <div style="margin-top: 5px; width: 100%" v-else>
+        <div class="contenedor-imagen">
+          <Image
+            v-if="producto.imageID != 'null'"
+            :src="producto.image"
+            alt="Image"
+            width="40"
+            preview
+            class="ver-imagen"
+            imageStyle="border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);padding: 3px; width: 100%; border-radius: 20px"
+          />
+        </div>
         <!-- <img :src="producto.image" alt="" srcset="" class="imagen-detalle" /> -->
 
         <h3 style="nombre-detalle">
@@ -49,6 +58,7 @@ export default {
       submitted: false,
       isFormValid: false,
       loadingBtnGuardar: false,
+      loading: true,
 
       // variables
       producto: null,
@@ -83,6 +93,8 @@ export default {
 
   methods: {
     abrir(categoria, subcategoria, producto) {
+      this.loading = true;
+
       this.submitted = false;
       this.display = true;
       // this.isFormValid = false;
@@ -98,6 +110,8 @@ export default {
       console.log("producto");
       console.log(producto);
       this.producto = producto;
+
+      this.loading = false;
 
       this.resetForm();
     },
@@ -199,35 +213,103 @@ export default {
 </script>
 
 <style scoped>
-.field {
-  margin-bottom: 1.5rem;
+/*  */
+/* WEB */
+/*  */
+@media all and (min-width: 961px) {
+  .card-detalle {
+    width: 20% !important;
+  }
+  .field {
+    margin-bottom: 1.5rem;
+  }
+
+  .header {
+    margin: 0px !important;
+  }
+
+  .p-dialog {
+    border-radius: 30% !important;
+    background: #fff;
+  }
+
+  .p-inputtext {
+    background: #fff;
+    color: #000;
+  }
+
+  .imagen-detalle {
+    width: 100%;
+    border-radius: 20px;
+  }
+
+  .nombre-detalle {
+    color: #000;
+    font-weight: bold !important;
+  }
+
+  .descripcion-detalle {
+    color: var(--description);
+  }
+
+  .contenedor-imagen {
+    display: flex;
+  }
+
+  .ver-imagen {
+    margin: auto;
+    width: 40%;
+    height: 40%;
+  }
+
+  .p-image-preview-indicator {
+    width: 100%;
+    border-radius: 20px !important;
+  }
 }
 
-.header {
-  margin: 0px !important;
-}
+/*  */
+/* MOBILE */
+/*  */
+@media all and (max-width: 960px) {
+  .field {
+    margin-bottom: 1.5rem;
+  }
 
-.p-dialog {
-  border-radius: 30% !important;
-  background: #fff;
-}
+  .header {
+    margin: 0px !important;
+  }
 
-.p-inputtext {
-  background: #fff;
-  color: #000;
-}
+  .p-dialog {
+    border-radius: 30% !important;
+    background: #fff;
+  }
 
-.imagen-detalle {
-  width: 100%;
-  border-radius: 20px;
-}
+  .p-inputtext {
+    background: #fff;
+    color: #000;
+  }
 
-.nombre-detalle {
-  color: #000;
-  font-weight: bold !important;
-}
+  .imagen-detalle {
+    width: 100%;
+    border-radius: 20px;
+  }
 
-.descripcion-detalle {
-  color: var(--description);
+  .nombre-detalle {
+    color: #000;
+    font-weight: bold !important;
+  }
+
+  .descripcion-detalle {
+    color: var(--description);
+  }
+
+  .contenedor-imagen {
+    display: flex;
+  }
+
+  .ver-imagen {
+    margin: auto;
+  }
 }
 </style>

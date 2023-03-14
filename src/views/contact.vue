@@ -587,8 +587,212 @@ export default {
 /*  */
 @media all and (min-width: 961px) {
   .card-principal {
+    background-color: var(--background-primary);
+  }
+
+  .contenedor-header {
+    position: fixed;
+    /* border: 1px solid red; */
+    width: 100%;
+    height: 10vh;
+    margin-top: 0px;
+    z-index: 10;
+    background-color: var(--background-primary);
+  }
+
+  .header {
+    height: 10vh;
+    width: 100%;
+    /* background-color: var(--description); */
+    color: #000;
+    display: flex;
+    /* border: 1px solid red; */
+  }
+
+  .btn-hamburguesa {
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    /* border: 1px solid red; */
+    align-items: center;
+    display: flex;
+  }
+
+  .icono-atras {
+    margin: auto;
+    margin-left: 20px;
+    font-size: 25px;
+  }
+
+  .titulo {
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    /* border: 1px solid red; */
+    display: flex;
+    align-items: center;
+    background-color: var(--background-primary);
+    color: #000;
+  }
+
+  .titulo h1 {
+    text-align: center;
+    width: 100%;
+  }
+
+  .adicional {
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    /* border: 1px solid red; */
+    align-items: center;
+    display: flex;
+  }
+
+  .scroll-container {
+    /* padding: 14px; */
+    /* padding-top: 20vh; */
+    padding-left: 10vh;
+    padding-right: 10vh;
+    /* height: 100%; */
+    position: absolute;
+    z-index: 1;
+    /* border: 1px solid green; */
+    width: 100%;
+    display: block;
+  }
+
+  .icono-contacto {
+    margin: auto;
+    margin-right: 20px;
+    color: var(--primary);
+    font-size: 25px;
+    background-color: var(--primary);
+  }
+
+  .logo {
+    margin: auto;
+    width: 60%;
+    height: 90%;
+    border-radius: 50%;
+  }
+
+  .btn-buscador {
+    rotate: 0deg;
+    margin: auto;
+    color: #000;
     background-color: var(--background);
+    transition: 0.5s;
+    /* border: 1px solid var(--primary); */
+  }
+
+  .contenedor-detalle {
+    width: 100%;
+    background-color: var(--background-primary);
+    color: #000;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .detalle {
+    display: block;
+    width: 100%;
+    background-color: var(--background-primary);
+    color: #000;
+  }
+
+  .contenedor-total {
+    display: block;
+    margin: auto;
+    width: 100%;
+    /* border: 1px solid red; */
     height: 100vh;
+    margin-top: 20px;
+  }
+
+  .contenedor-form {
+    padding: 10px;
+    /* border: 1px solid green; */
+    border-radius: 20px;
+    background-color: #fff;
+  }
+
+  .btn-guardar {
+    margin: auto;
+    color: #fff;
+    width: 100%;
+    background-color: var(--primary);
+    box-shadow: none;
+    margin-bottom: 20px;
+    border: 1px solid var(--primary);
+  }
+
+  .btn-guardar:active {
+    margin: auto;
+    color: #fff;
+    width: 100%;
+    background-color: var(--secondary) !important;
+    box-shadow: none;
+    border: 1px solid var(--secondary);
+  }
+
+  .btn-guardar:hover {
+    margin: auto;
+    color: #fff;
+    width: 100%;
+    background-color: var(--secondary) !important;
+    box-shadow: none;
+    border: 1px solid var(--secondary);
+  }
+
+  .btn-guardar:focus {
+    margin: auto;
+    color: #fff;
+    width: 100%;
+    background-color: var(--secondary) !important;
+    box-shadow: none;
+    border: 1px solid var(--secondary);
+  }
+
+  .btn-guardar::after {
+    margin: auto;
+    color: #fff;
+    width: 100%;
+    background-color: var(--secondary) !important;
+    box-shadow: none;
+    border: 1px solid var(--secondary);
+  }
+
+  .contenedor-redes-sociales {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .contenedor-facebook {
+    margin: auto;
+  }
+
+  .contenedor-twitter {
+    margin: auto;
+  }
+
+  .contenedor-instagram {
+    margin: auto;
+  }
+
+  .contenedor-whatsapp {
+    margin: auto;
+  }
+
+  .btn-redes-sociales {
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+  }
+
+  .btn-redes-sociales:active {
+    background-color: var(--secondary);
+    border: 1px solid var(--primary);
   }
 }
 
@@ -783,134 +987,6 @@ export default {
   .btn-redes-sociales:active {
     background-color: var(--secondary);
     border: 1px solid var(--primary);
-  }
-
-  .contenedor-buscador {
-    display: flex;
-    height: 8vh;
-    background-color: var(--background-primary);
-    /* border: 1px solid red; */
-  }
-
-  .contenedor-spinner {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    margin: auto;
-    /* border: 1px solid red; */
-  }
-
-  .contenedor-sin-datos {
-    margin: auto;
-    display: flex;
-    width: 100%;
-    /* border: 1px solid red; */
-  }
-
-  .sin-datos {
-    margin: auto;
-  }
-
-  .texto-sin-productos {
-    text-align: center;
-    color: var(--primary);
-  }
-
-  .p-inputgroup {
-    width: 80%;
-    height: 65%;
-    margin: auto;
-  }
-
-  .input-buscar {
-    border-radius: 16px !important;
-    border: 1px solid var(--background);
-  }
-
-  .btn-buscar {
-    border-top-right-radius: 16px !important;
-    border-bottom-right-radius: 16px !important;
-    background-color: var(--primary) !important;
-    border: 1px solid var(--primary) !important;
-  }
-
-  .contenedor-spinner {
-    display: flex;
-    align-items: center;
-    height: 100vh;
-  }
-
-  .titulo-categoria {
-    color: var(--primary);
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .subcategorias {
-    color: #000;
-    font-size: 16px;
-  }
-
-  .carta-producto {
-    width: 100%;
-    border-radius: 20px;
-    height: 12vh;
-    display: flex;
-    padding: 10px;
-    background: #fff;
-    flex-direction: row;
-  }
-
-  .imagen-producto {
-    color: #000;
-    margin: auto;
-    width: 30%;
-    /* border: 1px solid red; */
-    display: flex;
-  }
-
-  .producto-sin-imagen {
-    height: 6vh;
-    width: 6vh;
-    margin: auto;
-    /* border: 1px solid red; */
-    margin-left: 15px;
-  }
-
-  .ver-imagen {
-    margin-left: 15px;
-    /* margin: auto; */
-  }
-
-  .descripcion-producto {
-    color: #000;
-    margin: auto;
-    width: 70%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .descripcion-producto-nombre {
-    color: #000;
-    width: 100%;
-    height: 100%;
-  }
-
-  .descripcion-producto-nombre p {
-    margin: 0px;
-  }
-
-  .descripcion-producto-detalles {
-    color: #000;
-    width: 100%;
-    height: 100%;
-  }
-
-  .descripcion-producto-detalles p {
-    margin: 0px;
-    font-weight: bold;
   }
 }
 </style>
