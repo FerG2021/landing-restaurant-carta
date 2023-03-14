@@ -551,13 +551,13 @@ export default {
     },
 
     async abrirWhatsApp() {
-      let mensaje = `¡Hola Fernando!"`;
+      let mensaje = `¡Hola RestaurantApp!"`;
 
       mensaje = mensaje + "\n";
 
       mensaje =
         mensaje +
-        " Te envío este mensaje porque estoy interesado en contactarme con vos por motivos laborales, por favor contactame a la brevedad ";
+        " Te envío este mensaje porque estoy interesado adquirir sus productos ";
 
       mensaje = mensaje + "\n";
 
