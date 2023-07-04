@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <h1 class="titulo animate__animated animate__fadeInUp">MANINA</h1>
+    <h1 class="titulo animate__animated animate__fadeInUp">
+      RINCÓN DE <br> <br>
+      TENTACIONES
+    </h1>
 
     <div class="contenedor-logo">
       <img

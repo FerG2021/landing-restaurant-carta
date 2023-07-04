@@ -19,7 +19,7 @@
           </div>
 
           <div class="titulo animate__animated animate__fadeInDown">
-            <h1>Manina</h1>
+            <h1>Rincón de tentaciones</h1>
           </div>
 
           <div class="adicional animate__animated animate__fadeInRight">
