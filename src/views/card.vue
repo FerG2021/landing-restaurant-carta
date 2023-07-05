@@ -44,8 +44,6 @@
         </div>
       </div>
 
-      <!-- {{ arrayCategorias }} -->
-
       <div class="scroll-container" id="scroll-container">
         <div class="contenedor-spinner" v-if="loadingBuscar == true">
           <ProgressSpinner
@@ -71,16 +69,15 @@
             v-loading="loading"
             v-else
           >
-            <div
+          <Accordion :multiple="true">
+            <AccordionTab 
+              :header="categoria.name"
               v-if="
                 categoria.subcategorias.length > 0 &&
                 categoria.cantProductosCat > 0
               "
+              class="mt-10"
             >
-              <h1 class="titulo-categoria animate__fadeInUp">
-                <b>{{ categoria.name }}</b>
-              </h1>
-
               <div
                 v-for="(subcategoria, index) in categoria.subcategorias"
                 :key="index"
@@ -133,137 +130,15 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- <Accordion>
-              <AccordionTab
-                :header="subcategoria.name"
-                style="width: 100%; margin: 0px; height: auto"
-              >
-                <div
-                  v-for="(producto, index) in subcategoria.productos"
-                  :key="index"
-                  style="padding: 7px"
-                >
-                  <div style="display: flex" class="nombre-precio">
-                    <div style="margin: auto; width: 100%; margin: 0px">
-                      <p>{{ producto.name }}</p>
-                    </div>
-
-                    <div style="margin-right: 0px; width: 100%">
-                      <p style="text-align: right">$ {{ producto.price }}</p>
-                    </div>
-                  </div>
-
-                  <div v-if="producto.description" class="descripcion">
-                    {{ producto.description }}
-                  </div>
-                </div>
-              </AccordionTab>
-            </Accordion> -->
               </div>
-            </div>
+            </AccordionTab>
+          </Accordion>
           </div>
         </div>
-
-        <!-- <div class="footer" id="footer">
-          <div class="footer-section">
-            <p style="text-align: center; font-size: 20px">
-              CQC RESTAURANTE <br />
-              <Button
-                label="Escribir reseña"
-                class="p-button-link"
-                style="
-                  border: 1px solid #000;
-                  padding: 0px;
-                  color: #fff;
-                  text-decoration: none;
-                "
-                @click="$refs.modalResenia.abrir()"
-              />
-            </p>
-          </div>
-
-          <div class="footer-section">
-            <p style="text-align: center; font-size: 20px">CONTACTO</p>
-
-            <div style="display: flex; justify-content: center">
-              <span class="material-icons" style="margin-right: 5px">mail</span>
-              <a
-                href="mailto:fernandojaviergonzalez2018@gmail.com"
-                style="text-decoration: none; color: #fff"
-                >fernandojaviergonzalez2018@gmail.com</a
-              >
-            </div>
-
-            <div
-              style="display: flex; justify-content: center; margin-top: 20px"
-            >
-              <i
-                class="pi pi-whatsapp material-icons"
-                style="margin-right: 5px"
-              ></i>
-              <Button
-                label="3843-407142"
-                class="p-button-link"
-                style="
-                  border: 1px solid #000;
-                  padding: 0px;
-                  color: #fff;
-                  text-decoration: none;
-                "
-                @click="contactarWhatsApp()"
-              />
-            </div>
-
-            <div
-              style="display: flex; justify-content: center; margin-top: 20px"
-            >
-              <i
-                class="pi pi-map-marker material-icons"
-                style="margin-right: 5px"
-              ></i>
-              <span style="">Av. Saavedra S/N</span>
-            </div>
-          </div>
-
-          <div class="footer-section">
-            <p style="text-align: center">
-              <a
-                href="https://instagram.com"
-                style="text-decoration: none; color: #fff"
-                target="_blank"
-              >
-                <i
-                  class="pi pi-instagram material-icons"
-                  style="margin-right: 20px; font-size: 30px"
-                ></i>
-              </a>
-
-              <a
-                href="https://facebook.com"
-                style="text-decoration: none; color: #fff"
-                target="_blank"
-              >
-                <i
-                  class="pi pi-facebook material-icons"
-                  style="margin-right: 20px; font-size: 30px"
-                ></i>
-              </a>
-            </p>
-          </div>
-        </div> -->
       </div>
 
-      <!-- <Button
-      label="Contactar"
-      class="contacto-contenido-contactar p-button-link"
-      @click="contactarGmail()"
-    /> -->
-
       <modal-resenia ref="modalResenia"></modal-resenia>
-
       <modal-detalles ref="modalDetalles"></modal-detalles>
-
       <ConfirmDialog></ConfirmDialog>
       <Toast />
     </div>
@@ -349,15 +224,12 @@ export default {
 
   watch: {
     textoBuscar() {
-      console.log("buscar");
       this.getProductos();
     },
   },
 
   methods: {
     getQuery() {
-      console.log("this.$route.query");
-      console.log(this.$route.query);
       this.idMesa = this.$route.query.mesa;
     },
 
@@ -367,11 +239,7 @@ export default {
         .get("/api/subcategoria-listar-todas")
         .then((response) => {
           if (response.data.code == 200) {
-            console.log("response.data");
-            console.log(response.data);
-
             this.arraySubcategorias = response.data.data;
-
             this.getCategorias();
           }
         });
@@ -380,17 +248,7 @@ export default {
     async getCategorias() {
       await this.axios.get("/api/categoria").then((response) => {
         if (response.data.code == 200) {
-          console.log("response.data CATEGORIA");
-          console.log(response.data);
-
           this.arrayCategorias = response.data.data;
-
-          console.log("this.arraySubcategorias");
-          console.log(this.arraySubcategorias);
-
-          console.log("this.arrayCategorias");
-          console.log(this.arrayCategorias);
-
           this.arrayCategoriasMostrar = this.arrayCategorias;
           let arrayAux = [];
 
@@ -404,9 +262,6 @@ export default {
 
             elemento.subcategorias = arrayAux;
           });
-
-          console.log("this.arrayCategoriasMostrar");
-          console.log(this.arrayCategoriasMostrar);
         }
 
         this.getProductos();
@@ -420,18 +275,12 @@ export default {
         this.textoBuscar = null;
       }
 
-      console.log("this.textoBuscar");
-      console.log(this.textoBuscar);
-
       this.arrayProductos = [];
 
       await this.axios
         .get("/api/productoCarta/" + this.textoBuscar)
         .then((response) => {
           if (response.data.code == 200) {
-            console.log("response.data PRODUCTO");
-            console.log(response.data);
-
             this.arrayProductos = [];
 
             response.data.data.forEach((elemento) => {
@@ -439,10 +288,6 @@ export default {
                 this.arrayProductos.push(elemento);
               }
             });
-
-            // this.arrayProductos = response.data.data;
-            console.log("this.arrayProductos");
-            console.log(this.arrayProductos);
 
             this.cantProductos = this.arrayProductos.length;
 
@@ -466,12 +311,6 @@ export default {
 
               elemento.cantProductosCat = cantProductosCat;
             });
-
-            console.log("this.arrayCategoriasMostrar FINAL");
-            console.log(this.arrayCategoriasMostrar);
-
-            console.log("this.arrayCategorias");
-            console.log(this.arrayCategorias);
           }
         });
 
@@ -480,23 +319,12 @@ export default {
     },
 
     async getProductosBuscar() {
-      // let params = {};
-      // if (this.textoBuscar != null && this.textoBuscar != "") {
-      //   params.nombre = this.textoBuscar;
-      // } else {
-      //   params.nombre = null;
-      // }
-
-      // this.arrayCategoriasMostrar = [];
       this.arrayProductos = [];
 
       await this.axios
         .get("/api/productoBuscar/" + this.textoBuscar)
         .then((response) => {
           if (response.data.code == 200) {
-            console.log("response.data PRODUCTO");
-            console.log(response.data);
-
             response.data.data.forEach((elemento) => {
               if (elemento.stock == 1) {
                 this.arrayProductos.push(elemento);
@@ -504,11 +332,7 @@ export default {
             });
 
             this.arrayProductos = response.data.data;
-            console.log("this.arrayProductos");
-            console.log(this.arrayProductos);
-
             this.cantProductos = this.arrayProductos.length;
-            console.log("SDLFJSLKJFKLDS");
 
             let arrayProductoAux = [];
             this.arrayCategoriasMostrar.forEach((elemento) => {
@@ -524,15 +348,6 @@ export default {
                 ele.productos = arrayProductoAux;
               });
             });
-
-            console.log("this.cantProductos LENGHT");
-            console.log(this.cantProductos);
-
-            console.log("this.arrayCategoriasMostrar FINAL");
-            console.log(this.arrayCategoriasMostrar);
-
-            console.log("this.arrayProductos FINAL");
-            console.log(this.arrayProductos);
           }
         });
 
@@ -556,49 +371,31 @@ export default {
       btn.style.backgroundColor = "#f6f6f6";
       // btn.style.rotate = "90deg";
 
-      console.log("btn.style");
-      console.log(btn.style);
 
       if (btn.style.rotate == "90deg") {
-        console.log("entra 90");
         btn.style.transition = "4seg";
         btn.style.rotate = "0deg";
       } else {
-        console.log("entra 0");
         btn.style.transition = "4seg";
         btn.style.rotate = "90deg";
       }
-
-      console.log("btn.style.rotate");
-      console.log(btn.style.rotate);
-
-      // btn.style.border = "#b1464a";
-
-      // this.menu.toggle();
     },
 
     cambia() {
       console.log("cambia");
-      console.log(this.items);
     },
 
     buscar() {
       console.log("this.textoBuscar");
-      console.log(this.textoBuscar);
     },
 
     agregarProductoNuevo(producto) {
       console.log("producto");
-      console.log(producto);
-
       producto.cantidad = 1;
 
       let existeProducto = this.arrayPedidos.find(
         (element) => element.id == producto.id
       );
-
-      console.log("existeProducto");
-      console.log(existeProducto);
 
       if (existeProducto == undefined) {
         this.arrayPedidos.push(producto);
@@ -614,20 +411,12 @@ export default {
           parseFloat(elemento.price) * elemento.cantidad;
       });
 
-      console.log("this.precioTotalPedido");
-      console.log(this.precioTotalPedido);
     },
 
     agregarCantidadProducto(producto) {
-      console.log("producto");
-      console.log(producto);
-
       let existeProducto = this.arrayPedidos.find(
         (element) => element.id == producto.id
       );
-
-      console.log("existeProducto");
-      console.log(existeProducto);
 
       if (!existeProducto) {
         this.arrayPedidos.push(producto);
@@ -638,17 +427,12 @@ export default {
       this.precioTotalPedido = 0;
 
       this.arrayPedidos.forEach((elemento) => {
-        console.log("elemento");
-        console.log(elemento);
-
         this.cantidadTotalPedido = this.cantidadTotalPedido + elemento.cantidad;
         this.precioTotalPedido =
           this.precioTotalPedido +
           parseFloat(elemento.price) * elemento.cantidad;
       });
 
-      console.log("this.arrayPedidos");
-      console.log(this.arrayPedidos);
     },
 
     abrirDetalles() {
@@ -656,7 +440,6 @@ export default {
     },
 
     usoBlur() {
-      console.log("blur");
       // recorro el array de los pedidos para sumar la cantidad de prodcutos pedidos y mostrarlos
       this.cantidadTotalPedido = 0;
       this.arrayPedidos.forEach((elemento) => {
@@ -665,16 +448,10 @@ export default {
     },
 
     confirmarPedido() {
-      console.log("this.arrayPedidos");
-      console.log(this.arrayPedidos);
-
       // tomo solo los elementos que tienen cantidaa mayor que 0
       let arrayPedidosEnviar = this.arrayPedidos.filter(
         (elemento) => elemento.cantidad > 0
       );
-
-      console.log("arrayPedidosEnviar");
-      console.log(arrayPedidosEnviar);
 
       this.$confirm.require({
         header: "Confirmación",
@@ -703,34 +480,14 @@ export default {
         estado: "Comenzada",
       };
 
-      // await this.axios.get("/sanctum/csrf-cookie").then((response) => {
-      //   console.log("response");
-      //   console.log(response);
-      // });
-
-      // let credentials = {
-      //   email: "invitado",
-      //   password: "40899041",
-      // };
-
-      // await this.axios.post("/login", credentials).then((res) => {
-      //   console.log("res");
-      //   console.log(res);
-      // });
-
       await this.axios.post("/api/orden", params).then((response) => {
         if (response.data.code == 200) {
-          console.log("response.data PRODUCTO");
-          console.log(response.data);
-
           this.$toast.add({
             severity: "success",
             summary: "Pedido confirmado con éxito",
             detail: "En breve te traeremos tu pedido. Muchas gracias!",
             life: 3000,
           });
-          console.log("arrayPedidosEnviar");
-          console.log(arrayPedidosEnviar);
         }
       });
     },
@@ -784,8 +541,6 @@ export default {
 /*  */
 @media all and (min-width: 961px) {
   .scroll-container {
-    /* overflow-y: scroll; */
-    /* scroll-behavior: smooth; */
     padding: 14px;
     padding-left: 10vh;
     padding-right: 10vh;
@@ -794,18 +549,11 @@ export default {
     position: absolute;
     z-index: 1;
     display: flex;
-    /* border: 1px solid green; */
     width: 100%;
-
-    /* height: 100%;
-    height: -webkit-calc(100% - 18vh);
-    height: -moz-calc(100% - 18vh);
-    height: calc(100% - 18vh); */
   }
 
   .contenedor-header {
     position: fixed;
-    /* border: 1px solid red; */
     width: 100%;
     height: 18vh;
     margin-top: 0px;
@@ -1284,6 +1032,11 @@ export default {
   .descripcion-producto-detalles p {
     margin: 0px;
     font-weight: bold;
+  }
+
+  .mt-10 {
+    margin-top: 10px;
+    border: 1px solid red;
   }
 }
 </style>

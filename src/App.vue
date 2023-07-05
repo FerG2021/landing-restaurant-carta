@@ -124,6 +124,8 @@ export default {
   --background-primary: #e5e5e5;
 }
 
+@import url('./assets/colors.css');
+
 /*  */
 /* WEB */
 /*  */
