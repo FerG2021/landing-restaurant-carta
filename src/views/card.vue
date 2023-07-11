@@ -24,7 +24,7 @@
 
           <div class="adicional animate__animated animate__fadeInRight">
             <Button
-              icon="pi pi-bars"
+              icon="pi pi-comment"
               class="p-button-rounded p-button-text p-button-plain icono-contacto"
               @click="irContacto()"
             />

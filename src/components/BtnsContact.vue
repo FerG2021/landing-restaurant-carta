@@ -106,8 +106,8 @@
         }
 
         .btn-redes-sociales {
-            background-color: var(--primary);
-            border: 1px solid var(--primary);
+            background-color: var(--primary) !important;
+            border: 1px solid var(--primary) !important;
         }
 
         .btn-redes-sociales:active {
@@ -143,8 +143,8 @@
         }
 
         .btn-redes-sociales {
-            background-color: var(--primary);
-            border: 1px solid var(--primary);
+            background-color: var(--primary) !important;
+            border: 1px solid var(--primary) !important;
         }
 
         .btn-redes-sociales:active {
