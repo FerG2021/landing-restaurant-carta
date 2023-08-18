@@ -8,7 +8,7 @@
           <Button
             icon="pi pi-angle-left"
             class="p-button-rounded p-button-text p-button-plain icono-atras animate__animated animate__fadeInLeft"
-            @click="volverHome()"
+            @click="backHome()"
           />
         </div>
 
@@ -60,7 +60,7 @@ export default {
   },
 
   methods: {
-    volverHome() {
+    backHome() {
       this.loadingBtnAbrirCarta = true;
       this.$router.push("/");
     },

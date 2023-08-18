@@ -56,7 +56,7 @@
             },
 
             async abrirWhatsApp() {
-                let mensaje = `¡Hola RestaurantApp!"`;
+                let mensaje = `¡Hola FSSolutions!"`;
 
                 mensaje = mensaje + "\n";
 
@@ -68,7 +68,7 @@
 
                 mensaje = mensaje + "¡¡¡Saludos!!!";
 
-                let url = encodeURI("https://wa.me/" + 3843407142 + "?text=" + mensaje);
+                let url = encodeURI("https://wa.me/" + 5493843401553 + "?text=" + mensaje);
 
                 window.open(url, "_blank");
             },

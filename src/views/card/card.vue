@@ -9,27 +9,7 @@
 
     <div v-if="loading == false">
       <div class="contenedor-header">
-        <div class="header">
-          <div class="btn-hamburguesa animate__animated animate__fadeInLeft">
-            <Button
-              icon="pi pi-angle-left"
-              class="p-button-rounded p-button-text p-button-plain icono-atras"
-              @click="volverHome()"
-            />
-          </div>
-
-          <div class="titulo animate__animated animate__fadeInDown">
-            <h1>Rincón de tentaciones</h1>
-          </div>
-
-          <div class="adicional animate__animated animate__fadeInRight">
-            <Button
-              icon="pi pi-comment"
-              class="p-button-rounded p-button-text p-button-plain icono-contacto"
-              @click="irContacto()"
-            />
-          </div>
-        </div>
+        <CardHeader></CardHeader>
 
         <div class="contenedor-buscador animate__animated animate__fadeInUp">
           <div class="p-inputgroup">
@@ -69,70 +49,7 @@
             v-loading="loading"
             v-else
           >
-          <Accordion :multiple="true">
-            <AccordionTab 
-              :header="categoria.name"
-              v-if="
-                categoria.subcategorias.length > 0 &&
-                categoria.cantProductosCat > 0
-              "
-              class="mt-10"
-            >
-              <div
-                v-for="(subcategoria, index) in categoria.subcategorias"
-                :key="index"
-                style="z-index: 1"
-              >
-                <div v-if="subcategoria.productos.length > 0">
-                  <h2 class="subcategorias">{{ subcategoria.name }}</h2>
-
-                  <div
-                    v-for="(producto, index) in subcategoria.productos"
-                    :key="index"
-                    style="padding: 7px"
-                  >
-                    <div
-                      class="carta-producto"
-                      @click="
-                        $refs.modalDetalles.abrir(
-                          categoria,
-                          subcategoria,
-                          producto
-                        )
-                      "
-                    >
-                      <div class="imagen-producto">
-                        <Image
-                          v-if="producto.imageID != 'null'"
-                          :src="producto.image"
-                          alt="Image"
-                          width="40"
-                          class="ver-imagen"
-                          imageStyle="border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);padding: 3px; height: 6vh; width: 6vh; margin: auto"
-                        />
-
-                        <img
-                          v-else
-                          src="../assets/productosinimagen.png"
-                          class="producto-sin-imagen"
-                        />
-                      </div>
-                      <div class="descripcion-producto">
-                        <div class="descripcion-producto-nombre">
-                          <p>{{ producto.name }}</p>
-                        </div>
-                        <div class="descripcion-producto-detalles">
-                          <p>
-                            <b>$ {{ producto.price }}</b>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </AccordionTab>
-          </Accordion>
+            <AcordionItem :categoria="categoria"></AcordionItem>
           </div>
         </div>
       </div>
@@ -146,8 +63,10 @@
 </template>
 
 <script>
-import ModalResenia from "./modales/resenia.vue";
-import ModalDetalles from "./modales/detalles.vue";
+import ModalResenia from "../modales/resenia.vue";
+import ModalDetalles from "../modales/detalles.vue";
+import CardHeader from './CardHeader.vue';
+import AcordionItem from './AcordionItem.vue';
 
 export default {
   name: "Home",
@@ -155,6 +74,8 @@ export default {
   components: {
     ModalResenia,
     ModalDetalles,
+    CardHeader,
+    AcordionItem,
   },
 
   data() {
@@ -561,41 +482,6 @@ export default {
     background-color: var(--background-primary);
   }
 
-  .header {
-    height: 10vh;
-    width: 100%;
-    /* background-color: var(--description); */
-    color: #000;
-    display: flex;
-    /* border: 1px solid red; */
-  }
-
-  .btn-hamburguesa {
-    margin: auto;
-    height: 100%;
-    width: 100%;
-    /* border: 1px solid red; */
-    align-items: center;
-    display: flex;
-  }
-
-  .icono-atras {
-    margin: auto;
-    margin-left: 20px;
-    color: var(--primary);
-    font-size: 25px;
-    background-color: var(--primary);
-  }
-
-  .adicional {
-    margin: auto;
-    height: 100%;
-    width: 100%;
-    /* border: 1px solid red; */
-    align-items: center;
-    display: flex;
-  }
-
   .icono-contacto {
     margin: auto;
     margin-right: 20px;
@@ -618,27 +504,6 @@ export default {
     background-color: var(--background);
     transition: 0.5s;
     /* border: 1px solid var(--primary); */
-  }
-
-  .titulo {
-    margin: auto;
-    height: 100%;
-    width: 100%;
-    /* border: 1px solid red; */
-    display: flex;
-    align-items: center;
-  }
-
-  .titulo h1 {
-    text-align: center;
-    width: 100%;
-  }
-
-  .adicional {
-    margin: auto;
-    height: 100%;
-    width: 100%;
-    /* border: 1px solid red; */
   }
 
   .contenedor-buscador {

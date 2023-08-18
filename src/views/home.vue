@@ -27,8 +27,8 @@
         class="p-button-raised p-button-text p-button-rounded btn-comenzar"
         icon="pi pi-angle-right"
         iconPos="right"
-        @click="abrirCarta()"
-        :loading="loadingBtnAbrirCarta"
+        @click="openCard()"
+        :loading="loadingBtnOpenCard"
       ></Button>
 
       <Button
@@ -36,8 +36,8 @@
         class="p-button-raised p-button-text p-button-rounded btn-comenzar"
         icon="pi pi-angle-right"
         iconPos="right"
-        @click="abrirContacto()"
-        :loading="loadingBtnContacto"
+        @click="openContact()"
+        :loading="loadingBtnContact"
       ></Button>
     </div>
   </div>
@@ -51,21 +51,21 @@ export default {
 
   data() {
     return {
-      loadingBtnAbrirCarta: false,
-      loadingBtnContacto: false,
+      loadingBtnOpenCard: false,
+      loadingBtnContact: false,
     };
   },
 
   created() {},
 
   methods: {
-    abrirCarta() {
-      this.loadingBtnAbrirCarta = true;
+    openCard() {
+      this.loadingBtnOpenCard = true;
       this.$router.push("/card");
     },
 
-    abrirContacto() {
-      this.loadingBtnContacto = true;
+    openContact() {
+      this.loadingBtnContact = true;
       this.$router.push("/contact");
     },
   },
