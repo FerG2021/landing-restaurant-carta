@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <h1 class="titulo animate__animated animate__fadeInUp">
-      RINCÓN DE <br> <br>
+      RINCÓN DE <br />
+      <br />
       TENTACIONES
     </h1>
 
@@ -22,28 +23,24 @@
     </div>
 
     <div class="contenedor-button animate__animated animate__fadeInUp">
-      <Button
-        label="Comenzar"
-        class="p-button-raised p-button-text p-button-rounded btn-comenzar"
-        icon="pi pi-angle-right"
-        iconPos="right"
+      <BtnHome
+        :data="home"
         @click="openCard()"
         :loading="loadingBtnOpenCard"
-      ></Button>
+      ></BtnHome>
 
-      <Button
-        label="Contactanos"
-        class="p-button-raised p-button-text p-button-rounded btn-comenzar"
-        icon="pi pi-angle-right"
-        iconPos="right"
+      <BtnHome
+        :data="contactUs"
         @click="openContact()"
         :loading="loadingBtnContact"
-      ></Button>
+      ></BtnHome>
     </div>
   </div>
 </template>
 
 <script>
+import BtnHome from "../components/BtnHome.vue";
+
 export default {
   name: "Home",
 
@@ -53,6 +50,13 @@ export default {
     return {
       loadingBtnOpenCard: false,
       loadingBtnContact: false,
+
+      home: {
+        label: "Comenzar",
+      },
+      contactUs: {
+        label: "Contactanos",
+      },
     };
   },
 
@@ -69,6 +73,8 @@ export default {
       this.$router.push("/contact");
     },
   },
+
+  components: { BtnHome },
 };
 </script>
 
@@ -79,87 +85,42 @@ export default {
 @media all and (min-width: 961px) {
   .home {
     height: 100vh;
-    // background-color: var(--primary);
     background: rgb(177, 70, 74);
     background: linear-gradient(
       0deg,
       rgba(177, 70, 74, 1) 0%,
       rgba(189, 100, 103, 1) 54%
     );
-  }
-
-  .titulo {
-    background-color: transparent;
-    margin: 0px;
-    padding: 50px 0px 0px 50px;
-    font-size: 3rem;
-    // border: 1px solid green;
-    height: 12vh;
-  }
-
-  .contenedor-logo {
-    display: flex;
-  }
-
-  .medialuna {
-    margin: auto;
-    width: 30%;
-  }
-
-  .contenedor-saludo {
-    margin-top: 2vh;
-    text-align: center;
-  }
-
-  .contenedor-saludo h2 {
-    padding-left: 20px;
-    text-align: center;
-    font-size: 30px;
-  }
-
-  .contenedor-saludo h3 {
-    padding: 20px;
-  }
-
-  .contenedor-button {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .btn-comenzar {
-    margin: auto;
-    color: #fff;
-    width: 40%;
-    background-color: var(--secondary);
-    box-shadow: none;
-    margin-bottom: 20px;
-  }
-
-  .btn-comenzar:hover {
-    margin: auto;
-    color: #fff !important;
-    width: 40%;
-    background-color: var(--secondary);
-    box-shadow: none;
-    margin-bottom: 20px;
-  }
-
-  .btn-comenzar:active {
-    margin: auto;
-    color: #fff !important;
-    width: 40%;
-    background-color: var(--secondary);
-    box-shadow: none;
-    margin-bottom: 20px;
-  }
-
-  .btn-comenzar::after {
-    margin: auto;
-    color: #fff !important;
-    width: 40%;
-    background-color: var(--secondary);
-    box-shadow: none;
-    margin-bottom: 20px;
+    .titulo {
+      background-color: transparent;
+      margin: 0px;
+      padding: 50px 0px 0px 50px;
+      font-size: 3rem;
+      height: 12vh;
+    }
+    .contenedor-logo {
+      display: flex;
+      .medialuna {
+        margin: auto;
+        width: 30%;
+      }
+    }
+    .contenedor-saludo {
+      margin-top: 2vh;
+      text-align: center;
+      h2 {
+        padding-left: 20px;
+        text-align: center;
+        font-size: 30px;
+      }
+      h3 {
+        padding: 20px;
+      }
+    }
+    .contenedor-button {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 
@@ -169,78 +130,44 @@ export default {
 @media all and (max-width: 960px) {
   .home {
     height: 100vh;
-    // background-color: var(--primary);
     background: rgb(177, 70, 74);
     background: linear-gradient(
       0deg,
       rgba(177, 70, 74, 1) 0%,
       rgba(189, 100, 103, 1) 54%
     );
-  }
-
-  .titulo {
-    background-color: transparent;
-    margin: 0px;
-    padding: 50px 0px 0px 50px;
-    font-size: 3rem;
-    // border: 1px solid green;
-    height: 12vh;
-  }
-
-  .contenedor-logo {
-    display: flex;
-    margin-right: 30px;
-    margin-top: 2vh;
-  }
-
-  .medialuna {
-    margin: auto;
-    width: 100%;
-    margin-right: 20px;
-  }
-
-  .contenedor-saludo {
-    margin-top: 2vh;
-    text-align: center;
-  }
-
-  .contenedor-saludo h2 {
-    padding-left: 20px;
-    text-align: center;
-  }
-
-  .contenedor-saludo h3 {
-    padding: 20px;
-  }
-
-  .contenedor-button {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .btn-comenzar {
-    margin: auto;
-    color: #fff;
-    width: 80%;
-    background-color: var(--secondary);
-    box-shadow: none;
-    margin-bottom: 20px;
-  }
-
-  .btn-comenzar:active {
-    margin: auto;
-    color: #fff;
-    width: 80%;
-    background-color: var(--secondary);
-    box-shadow: none;
-  }
-
-  .btn-comenzar::after {
-    margin: auto;
-    color: #fff;
-    width: 80%;
-    background-color: var(--secondary);
-    box-shadow: none;
+    .titulo {
+      background-color: transparent;
+      margin: 0px;
+      padding: 50px 0px 0px 50px;
+      font-size: 3rem;
+      height: 12vh;
+    }
+    .contenedor-logo {
+      display: flex;
+      margin-right: 30px;
+      margin-top: 2vh;
+      .medialuna {
+        margin: auto;
+        width: 100%;
+        margin-right: 20px;
+      }
+    }
+    .contenedor-saludo {
+      margin-top: 2vh;
+      text-align: center;
+      h2 {
+        padding-left: 20px;
+        text-align: center;
+      }
+      h3 {
+        padding: 20px;
+      }
+    }
+    .contenedor-button {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 </style>

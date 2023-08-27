@@ -97,18 +97,9 @@ export default {
 
       this.submitted = false;
       this.display = true;
-      // this.isFormValid = false;
 
-      console.log("categoria");
-      console.log(categoria);
       this.categoria = categoria;
-
-      console.log("subcategoria");
-      console.log(subcategoria);
       this.subcategoria = subcategoria;
-
-      console.log("producto");
-      console.log(producto);
       this.producto = producto;
 
       this.loading = false;
@@ -127,11 +118,8 @@ export default {
     },
 
     handleSubmit(isFormValid) {
-      console.log("isFormValid");
-      console.log(isFormValid);
 
       this.isFormValid = isFormValid;
-      console.log("entro");
 
       this.submitted = true;
 
@@ -143,16 +131,9 @@ export default {
     },
 
     toggleDialog() {
-      console.log("entro");
       this.showMessage = !this.showMessage;
 
       this.guardar();
-
-      // if (!this.showMessage) {
-      //   this.resetForm();
-      // } else {
-      //   this.guardar();
-      // }
     },
 
     resetForm() {
@@ -185,8 +166,6 @@ export default {
           this.display = false;
           this.$emit("actualizarTabla");
         } else {
-          console.log("response.data.data");
-          console.log(response.data.data);
 
           this.$toast.add({
             severity: "error",
@@ -194,15 +173,6 @@ export default {
             detail: response.data.data,
             life: 5000,
           });
-
-          // for (const property in response.data.data) {
-          //   this.$toast.add({
-          //     severity: "error",
-          //     summary: "Se ha producido un error",
-          //     detail: `${response.data.data[property]}`,
-          //     life: 5000,
-          //   });
-          // }
         }
       });
 

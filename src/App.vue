@@ -5,25 +5,6 @@
 <script>
 export default {
   name: "App",
-
-  created() {
-    this.$store.state.idioma = {
-      name: "Español",
-      code: "ES",
-      bandera: "/espana.png",
-    };
-  },
-
-  watch: {
-  },
-
-  data() {
-    return {
-    };
-  },
-
-  methods: {
-  },
 };
 </script>
 
