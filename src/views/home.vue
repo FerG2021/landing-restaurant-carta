@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <h1 class="titulo animate__animated animate__fadeInUp">
-      RINCÓN DE <br />
+      DIGITAL <br />
       <br />
-      TENTACIONES
+      DELIGHTS
     </h1>
 
     <div class="contenedor-logo">

@@ -141,7 +141,7 @@ export default {
     async getProducts() {
       this.loadingSearch = true;
 
-      await this.axios.get("/api/productoCarta/" + null).then((response) => {
+      await this.axios.get("/api/productoCarta").then((response) => {
         if (response.data.code == 200) {
           this.arrayProducts = [];
 
